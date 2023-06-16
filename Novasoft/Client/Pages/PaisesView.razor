@@ -1,0 +1,51 @@
+﻿@page "/paises"
+@inherits PaisesViewModel
+
+<RadzenCard Visible="@VisibleData">
+
+@if (Paises?.Count() > 0)
+{
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                    Data="Paises" TItem="GenPaise" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" @ref="Grid" >
+        <Columns>
+            <RadzenDataGridColumn TItem="GenPaise" Property="CodPai"  Title="Codigo" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+            <RadzenDataGridColumn TItem="GenPaise" Property="NomPai" Title="Nombre" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+            <RadzenDataGridColumn TItem="GenPaise" Property="IndTel"  Title="Indentificador Telefonico" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+            <RadzenDataGridColumn TItem="GenPaise" Property="CodDian" Title="Codigo Dian" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+            <RadzenDataGridColumn TItem="GenPaise" Property="CodIso" Title="Codigo Iso" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+        </Columns>
+    </RadzenDataGrid>
+}
+else
+{ 
+    <p>No hay paises para mostrar</p>
+}
+    <RadzenButton Click=@(args => Agregar()) Text="Agregar Paises" ButtonStyle="ButtonStyle.Primary" />
+</RadzenCard>
+<EditForm Model="@Model" OnValidSubmit="SavePaises" >
+    <RadzenCard Visible="@(!VisibleData)">
+    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Codigo del Pais</RadzenText>
+    <RadzenTextBox @bind-Value=@Model.CodPai class="w-100" />
+    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Nombre del Pais</RadzenText>
+    <RadzenTextBox @bind-Value=@Model.NomPai class="w-100" />
+    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Indicador</RadzenText>
+    <RadzenTextBox @bind-Value=@Model.IndTel class="w-100" />
+    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Codigo Dian</RadzenText>
+    <RadzenTextBox @bind-Value=@Model.CodDian class="w-100" />
+    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Codigo Iso</RadzenText>
+    <RadzenTextBox @bind-Value=@Model.CodIso class="w-100" />
+    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Codigo Idioma</RadzenText>
+    <RadzenTextBox @bind-Value=@Model.CodIdioma class="w-100" />
+    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Codigo Pais Extr</RadzenText>
+    <RadzenTextBox @bind-Value=@Model.CodPaiExtr class="w-100" />
+    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Indicador Act Extr</RadzenText>
+    <RadzenSwitch @bind-Value=@Model.IndActExtr />
+    <RadzenButton ButtonType="ButtonType.Submit" Size="ButtonSize.Large" Icon="save" Text="Grabar" />
+
+        <DeptosView CodigoPais="@Model.CodPai"></DeptosView>
+
+    <RadzenButton Click=@(args => Cancelar()) Text="Cancelar" ButtonStyle="ButtonStyle.Primary" />
+
+    </RadzenCard>
+
+</EditForm>

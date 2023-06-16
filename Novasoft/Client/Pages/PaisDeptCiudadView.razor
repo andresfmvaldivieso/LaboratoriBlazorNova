@@ -1,0 +1,11 @@
+﻿@inherits PaisDeptCiudadViewModel
+
+<RadzenTextBox @bind-Value=@paisSelected ReadOnly="true" class="col-1" />
+<RadzenDropDown @bind-Value=@paisSelected Data=@paises LoadData=@LoadDataPaises Count="@countPaises" AllowVirtualization="true" AllowClear="true"
+                AllowFiltering="true" TextProperty="NomPai" ValueProperty="CodPai" class="col-10" />
+<RadzenTextBox @bind-Value=@deptoSelected ReadOnly="true" class="col-1" />
+<RadzenDropDown @bind-Value=@deptoSelected Data=@deptos LoadData=@LoadDataDeptos Count="@countDeptos" AllowVirtualization="true" AllowClear="true"
+                AllowFiltering="true" TextProperty="NomDep" ValueProperty="CodDep" class="col-10" />
+<RadzenTextBox @bind-Value=@ciudadSelected ReadOnly="true" class="col-1" />
+<RadzenDropDown @bind-Value=@ciudadSelected Data=@ciudades LoadData=@LoadDataCiudades Count="@countCiudad" AllowVirtualization="true" AllowClear="true"
+                AllowFiltering="true" TextProperty="NomCiu" ValueProperty="CodCiu" Change="@CiudadChange" class="col-10" />
