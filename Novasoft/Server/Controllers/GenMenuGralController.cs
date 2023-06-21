@@ -18,7 +18,7 @@ namespace Novasoft.Server.Controllers
         [HttpGet("{idCodApl}", Name = "GenMenuGral")]
         public async Task<ActionResult<IEnumerable<GenMenuGral>>> Get(string idCodApl)
         {
-            IEnumerable<GenMenuGral> result = await _context.GenMenuGrals.Where(x=>x.CodApl== idCodApl).ToListAsync();
+            IEnumerable<GenMenuGral> result = await _context.GenMenuGrals.Where(x=>x.CodApl== idCodApl&&x.TipObj=="P"&&x.GruMenu== "Novasoft").Take(20).ToListAsync();
             return result is null ? NoContent() : Ok(result);
         }
     }

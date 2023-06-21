@@ -76,7 +76,7 @@ public partial class RhhEmplea
     /// <summary>
     /// Clase Libreta Militar
     /// </summary>
-    public short? ClaLib { get; set; }
+    public int? ClaLib { get; set; }
 
     /// <summary>
     /// Distrito militar
@@ -96,12 +96,12 @@ public partial class RhhEmplea
     /// <summary>
     /// Estado civil
     /// </summary>
-    public short? EstCiv { get; set; }
+    public int? EstCiv { get; set; }
 
     /// <summary>
     /// Nacionalidad
     /// </summary>
-    public short? NacEmp { get; set; }
+    public int? NacEmp { get; set; }
 
     /// <summary>
     /// Dir. Residencia
@@ -241,7 +241,7 @@ public partial class RhhEmplea
     /// <summary>
     /// Regimen salarial
     /// </summary>
-    public short? RegSal { get; set; }
+    public int? RegSal { get; set; }
 
     /// <summary>
     /// Tipo de liquidacion
@@ -696,7 +696,7 @@ public partial class RhhEmplea
 
     public int? NumReq { get; set; }
 
-    public byte? AutDat { get; set; }
+    public int AutDat { get; set; }
 
     public DateTime? FecAut { get; set; }
 

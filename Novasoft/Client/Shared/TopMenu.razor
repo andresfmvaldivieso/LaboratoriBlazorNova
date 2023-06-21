@@ -1,0 +1,11 @@
+﻿@inject TooltipService tooltipService
+
+<RadzenButton style="background-color:#f2f2f2;color:#0f1108" Icon="gpp_maybe" MouseEnter="@(args => ShowTooltip1(args) )" />
+<RadzenButton style="background-color:#f2f2f2;color:#0f1108 " Icon="summarize" MouseEnter="@(args => ShowTooltip2(args) )" />
+<RadzenButton style="background-color:#f2f2f2;color:#0f1108" Icon="source" MouseEnter="@(args => ShowTooltip3(args) )" />
+
+@code {
+    void ShowTooltip1(ElementReference elementReference, TooltipOptions options = null) => tooltipService.Open(elementReference, "Vencimiento de Seguros!", options);
+    void ShowTooltip2(ElementReference elementReference, TooltipOptions options = null) => tooltipService.Open(elementReference, "Vencimiento de Mantenimiento!", options);
+    void ShowTooltip3(ElementReference elementReference, TooltipOptions options = null) => tooltipService.Open(elementReference, "Responsable de Activos!", options);
+}

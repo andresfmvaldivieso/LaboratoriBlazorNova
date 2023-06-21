@@ -4,8 +4,8 @@
 
 <AuthorizeView>
     <Authorized>
-        <a href="authentication/profile">Hello, @context.User.Identity?.Name!</a>
-        <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
+        <a href="authentication/profile" style="color:#0f1108">Hello, @context.User.Identity?.Name!</a>
+        <button class="nav-link btn btn-link" @onclick="BeginLogOut" style="color:#0f1108">Log out</button>
     </Authorized>
     <NotAuthorized>
         <a href="authentication/register">Register</a>

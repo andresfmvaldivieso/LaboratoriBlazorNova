@@ -6,13 +6,16 @@
     </div>
 
     <main>
-        <div class="top-row px-4 auth">
+        <div class="top-row px-4 auth" style="background-color:#f2f2f2">
+            <div class="col-4 offset-md-3">
+                <TopMenu />
+            </div>
             <LoginDisplay />
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank" style="color:#0f1108">About</a>
         </div>
-
         <article class="content px-4">
             @Body
         </article>
     </main>
 </div>
+<RadzenTooltip />

@@ -13,7 +13,7 @@ namespace Novasoft.Client.Services
         }
         public async Task<IEnumerable<GthEstCivil>?> GetEstCivil()
         {
-            return await _httpClient.GetFromJsonAsync<IEnumerable<GthEstCivil>>($"api/GthEstCivil");
+            return await _httpClient.GetFromJsonAsync<IEnumerable<GthEstCivil>>($"api/GthEstCiviles");
         }
     }
     public interface IGthEstCivilServices

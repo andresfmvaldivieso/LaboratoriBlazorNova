@@ -1,6 +1,9 @@
-﻿<div class="top-row ps-3 navbar" style="background-color:#f7f7f7">
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+@inject ISisAplicacionesServices sisAplicacionesServices
+@inject IGenMenuGralServices genMenuGralServices
+<div class="top-row ps-3 navbar" style="background-color:#f2f2f2">
     <div class="container-fluid">
-        <a class="navbar-brand" href="" style="font-size:35px">Novasoft</a>
+        <RadzenImage Path="https://novasoft.net.co/PortalWeb/Imagenes/logo_nova.png" Style="width: 13rem;" />
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -10,15 +13,20 @@
 <div class="@NavMenuCssClass nav-scrollable" style="background-color:#1B9968" @onclick="ToggleNavMenu">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
+            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" Style="color:#f2f2f2;font-size:1.2rem">Aplicacion:</RadzenText>
+            <RadzenDropDown @bind-Value=@codApl Data=@sisAplicacions TextProperty="NomMod" ValueProperty="CodApl" Style="width: 100%; max-width: 400px;" Change="@AplicacionChange" Placeholder="Seleccione Aplicacion" />
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="contratacion">
-                <RadzenIcon Icon="contact_page" class="rz-mr-1" /><b>Contratacion</b>
-            </NavLink>
-        </div>
+        @if (listaMenu?.Count() > 0)
+        {
+            @foreach (var menu in listaMenu)
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="@menu.RefObj">
+                        <RadzenIcon Icon="add" class="rz-mr-1" /><b style="white-space: nowrap;">@menu.DesObj.Trim()</b>
+                    </NavLink>
+                </div>
+            }
+        }
     </nav>
 </div>
 
@@ -27,9 +35,31 @@
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
+    public IEnumerable<SisAplicacion> sisAplicacions;
+    public string codApl { get; set; }
+
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
     }
+    protected async override Task OnParametersSetAsync()
+    {
+        try
+        {
+            sisAplicacions = await sisAplicacionesServices.GetSisAplicaciones();
+        }
 
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+        await base.OnParametersSetAsync();
+    }
+    public IEnumerable<GenMenuGral?> listaMenu;
+
+    public async void AplicacionChange(dynamic args)
+    {
+        listaMenu = !string.IsNullOrEmpty(codApl) ? await genMenuGralServices.GetGenMenuGral(codApl) : null;
+        InvokeAsync(StateHasChanged);
+    }
 }

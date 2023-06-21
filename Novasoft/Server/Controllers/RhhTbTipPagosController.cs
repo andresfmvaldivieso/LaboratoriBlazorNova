@@ -4,20 +4,21 @@ using Novasoft.Server.Data;
 
 namespace Novasoft.Server.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class GthEstCivilesController : ControllerBase
+    [Route("api/[controller]")]
+    public class RhhTbTipPagosController : ControllerBase
     {
         private readonly BdlaboratorioContext _context;
 
-        public GthEstCivilesController(BdlaboratorioContext context)
+        public RhhTbTipPagosController(BdlaboratorioContext context)
         {
             _context = context;
         }
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GthEstCivil>>> Get()
+        public async Task<ActionResult<IEnumerable<RhhTbTipPag>>> Get()
         {
-            IEnumerable<GthEstCivil> result = await _context.GthEstCivils.ToListAsync();
+            IEnumerable<RhhTbTipPag> result = await _context.RhhTbTipPags.ToListAsync();
             return result is null ? NoContent() : Ok(result);
         }
     }
