@@ -1,292 +1,631 @@
 ﻿@page "/GTH142"
 @inherits RhhEmpleaViewModel
-<div class="row">
-    <div class="col-md-6 col-sm-12">
-        <RadzenPanel AllowCollapse="true" Class="rz-my-10 rz-mx-auto w-100">
-            <HeaderTemplate>
-                <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
+
+@*<RadzenDataGrid style="height: 335px" 
+                @ref="grid"
+                @bind-Value=@selectedModel
+                KeyProperty="CodEmp"
+                IsLoading=@isLoading 
+                Data="@rhhEmplea" 
+                Count="@count" 
+                LoadData="@LoadDataContratacion" 
+                TItem="RhhEmplea" 
+                FilterPopupRenderMode="PopupRenderMode.OnDemand" 
+                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" 
+                FilterMode="FilterMode.Simple"
+                AllowSorting="true" 
+                AllowFiltering="true" 
+                AllowPaging="true" 
+                PageSize="5" 
+                PagerHorizontalAlign="HorizontalAlign.Center" 
+                ColumnWidth="200px">
+    <Columns>
+        <RadzenDataGridColumn TItem="RhhEmplea" Property="CodEmp" Title="Codigo Empleado" Width="120px" />
+        <RadzenDataGridColumn TItem="RhhEmplea" Property="TipIdeNavigation.DesTip" Title="Identificacion" Width="120px" />
+        <RadzenDataGridColumn TItem="RhhEmplea" Property="NumIde" Title="Numero Identificacion" Width="120px" />
+        <RadzenDataGridColumn TItem="RhhEmplea" Property="NomEmp" Title="Nombre" Width="120px" />
+        <RadzenDataGridColumn TItem="RhhEmplea" Property="Ap1Emp" Title="Apellidos" Sortable="false" Filterable="false">
+            <Template Context="data">
+                @data.Ap1Emp @data.Ap2Emp
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>*@
+
+
+
+<RadzenTemplateForm Data="@Model" Submit="@((RhhEmplea args) => { Save(args); })">
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <RadzenPanel AllowCollapse="true" Class="rz-my-10 rz-mx-auto w-100">
+                <HeaderTemplate>
                     <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
-                        <RadzenIcon Icon="account_box" class="rz-mr-1" Style="color:#1B9968" /><b style="color:#1B9968">Datos del Documento del Empleado</b>
+                        <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
+                            <RadzenIcon Icon="account_box" class="rz-mr-1" Style="color:#1B9968" /><b style="color:#1B9968">Datos del Documento del Empleado</b>
+                        </RadzenText>
                     </RadzenText>
-                </RadzenText>
-            </HeaderTemplate>
-            <ChildContent>
-                <RadzenCard class="rz-mt-4">
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Codigo Empleado:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.CodEmp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Numero de Identificacion:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.NumIde class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Tipo de Identificacion:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.TipIde ReadOnly="true" class="col-1" />
-                    <RadzenDropDownDataGrid @bind-Value=@Model.TipIde Data=@tipoIdent TextProperty="DesTip" ValueProperty="CodTip"
-                                            class="col-10" LoadData=@LoadData Count=@countTipoIde AllowClear="true" AllowFiltering="true">
-                        <Columns>
-                            <RadzenDropDownDataGridColumn Property="CodTip" Title="Codigo Tipo" Width="100px" />
-                            <RadzenDropDownDataGridColumn Property="DesTip" Title="Nombre Tipo" Width="200px" />
-                        </Columns>
-                    </RadzenDropDownDataGrid>
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Fecha de Expedicion:</RadzenText>
-                    <RadzenDatePicker @bind-Value=@Model.FecExpdoc class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Codigo Alterno:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.CodEmp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Ciudad de Expedicion del Documento:</RadzenText>
-                    <PaisDeptCiudadView LocalizacionChange="@PaisDepartamentoCiudadExpedicion"></PaisDeptCiudadView>
-                </RadzenCard>
-            </ChildContent>
-        </RadzenPanel>
+                </HeaderTemplate>
+                <ChildContent>
+                    <RadzenCard class="rz-mt-4">
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Codigo Empleado:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CodEmp class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Numero de Identificacion:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.NumIde class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Tipo de Identificacion:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.TipIde ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.TipIde Data=@tipoIdent TextProperty="DesTip" ValueProperty="CodTip"
+                                                class="col-10" LoadData=@LoadData Count=@countTipoIde AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="CodTip" Title="Codigo Tipo" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="DesTip" Title="Nombre Tipo" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Fecha de Expedicion:</RadzenText>
+                        <RadzenDatePicker @bind-Value=@Model.FecExpdoc class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Codigo Alterno:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CodEmp class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Ciudad de Expedicion del Documento:</RadzenText>
+                        <PaisDeptCiudadView LocalizacionChange="@PaisDepartamentoCiudadExpedicion" idpadre=55></PaisDeptCiudadView>
+                        
+                    </RadzenCard>
+                </ChildContent>
+            </RadzenPanel>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <RadzenPanel AllowCollapse="true" Class="rz-my-10 rz-mx-auto w-100">
+                <HeaderTemplate>
+                    <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
+                        <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
+                            <RadzenIcon Icon="account_box" class="rz-mr-1" Style="color:#1B9968" /><b style="color:#1B9968">Datos del Empleado</b>
+                        </RadzenText>
+                    </RadzenText>
+                </HeaderTemplate>
+                <ChildContent>
+                    <RadzenCard class="rz-mt-4">
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Primer Nombre:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.Nom1Emp class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Segundo Nombre:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.Nom2Emp class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Primer Apellido:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.Ap1Emp class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Segundo Apellido:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.Ap2Emp class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Fecha de Nacimiento:</RadzenText>
+                        <RadzenDatePicker @bind-Value=@Model.FecNac class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Ciudad de Nacimiento:</RadzenText>
+                        <PaisDeptCiudadView LocalizacionChange="@PaisDepartamentoCiudadNacimiento"></PaisDeptCiudadView>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Genero:</RadzenText>
+                        <RadzenNumeric @bind-Value=@Model.SexEmp ReadOnly="true" class="col-1" />
+                        <RadzenDropDown @bind-Value=@Model.SexEmp Data=@genero LoadData=@LoadDataGenero Count="@countGenero" AllowVirtualization="true" AllowClear="true"
+                                        AllowFiltering="true" TextProperty="DesGen" ValueProperty="CodGen" class="col-10" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Estado Civil:</RadzenText>
+                        <RadzenNumeric @bind-Value=@Model.EstCiv ReadOnly="true" class="col-1" />
+                        <RadzenDropDown @bind-Value=@codEstCivil Data=@estCivil LoadData=@LoadDataEstCivil Count="@countEstCivil" AllowVirtualization="true" AllowClear="true"
+                                        AllowFiltering="true" TextProperty="DesEst" ValueProperty="CodEst" class="col-10" />
+                    </RadzenCard>
+                </ChildContent>
+            </RadzenPanel>
+        </div>
     </div>
-    <div class="col-md-6 col-sm-12">
-        <RadzenPanel AllowCollapse="true" Class="rz-my-10 rz-mx-auto w-100">
-            <HeaderTemplate>
-                <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <RadzenPanel AllowCollapse="true" Class="rz-my-10 rz-mx-auto w-100">
+                <HeaderTemplate>
                     <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
-                        <RadzenIcon Icon="account_box" class="rz-mr-1" Style="color:#1B9968" /><b style="color:#1B9968">Datos del Empleado</b>
+                        <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
+                            <RadzenIcon Icon="account_box" class="rz-mr-1" Style="color:#1B9968" /><b style="color:#1B9968">Datos Basicos del Empleado</b>
+                        </RadzenText>
                     </RadzenText>
-                </RadzenText>
-            </HeaderTemplate>
-            <ChildContent>
-                <RadzenCard class="rz-mt-4">
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Primer Nombre:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.CodEmp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Segundo Nombre:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.CodEmp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Primer Apellido:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.Ap1Emp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Segundo Apellido:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.Ap2Emp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Fecha de Nacimiento:</RadzenText>
-                    <RadzenDatePicker @bind-Value=@Model.FecNac class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Ciudad de Nacimiento:</RadzenText>
-                    <PaisDeptCiudadView LocalizacionChange="@PaisDepartamentoCiudadNacimiento"></PaisDeptCiudadView>
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Genero:</RadzenText>
-                    <RadzenNumeric @bind-Value=@Model.SexEmp ReadOnly="true" class="col-1" />
-                    <RadzenDropDown @bind-Value=@Model.SexEmp Data=@genero LoadData=@LoadDataGenero Count="@countGenero" AllowVirtualization="true" AllowClear="true"
-                                    AllowFiltering="true" TextProperty="DesGen" ValueProperty="CodGen" class="col-10" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Estado Civil:</RadzenText>
-                    <RadzenNumeric @bind-Value=@Model.EstCiv ReadOnly="true" class="col-1" />
-                    <RadzenDropDown @bind-Value=@Model.EstCiv Data=@estCivil LoadData=@LoadDataEstCivil Count="@countEstCivil" AllowVirtualization="true" AllowClear="true"
-                                    AllowFiltering="true" TextProperty="DesEst" ValueProperty="CodEst" class="col-10" />
-                </RadzenCard>
-            </ChildContent>
-        </RadzenPanel>
+                </HeaderTemplate>
+                <ChildContent>
+                    <RadzenCard class="rz-mt-4">
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Numero de Pasaporte:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.NroPsp class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Pais de Emision:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CodPaiEmisorPsp ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.CodPaiEmisorPsp Data=@paises TextProperty="NomPai" ValueProperty="CodPai"
+                                                class="col-10" LoadData=@LoadDataPaises Count=@countPaises AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="CodPai" Title="Codigo Pais" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="NomPai" Title="Nombre Pais" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Fecha de Expedicion:</RadzenText>
+                        <RadzenDatePicker @bind-Value=@Model.FecExpPsp class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Fecha de Vencimiento:</RadzenText>
+                        <RadzenDatePicker @bind-Value=@Model.FecVencPsp class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Clase Libreta Militar:</RadzenText>
+                        <RadzenDropDown @bind-Value=@Model.ClaLib Data=@clasesLib TextProperty="nomClaseLib" ValueProperty="codClaseLib" Style="width: 100%; max-width: 400px;" class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Numero de Libreta Militar:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.NumLib class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Distrito de Libreta Militar:</RadzenText>
+                        <RadzenNumeric @bind-Value=@Model.DimLib class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Nacionalidad:</RadzenText>
+                        <RadzenDropDown @bind-Value=@Model.NacEmp Data=@nacionalidades TextProperty="nomNac" ValueProperty="codNac" Style="width: 100%; max-width: 400px;" class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Grupo Sanguineo:</RadzenText>
+                        <RadzenDropDown @bind-Value=@Model.GruSan Data=@gruposSang Style="width: 100%; max-width: 400px;" class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Factor RH:</RadzenText>
+                        <RadzenDropDown @bind-Value=@Model.FacRhh Data=@factorRh Style="width: 100%; max-width: 400px;" class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Estatura:</RadzenText>
+                        <RadzenNumeric @bind-Value=@Model.TamEmp class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Peso:</RadzenText>
+                        <RadzenNumeric @bind-Value=@Model.PesEmp class="col-12" />
+                    </RadzenCard>
+                </ChildContent>
+            </RadzenPanel>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <RadzenPanel AllowCollapse="true" Class="rz-my-10 rz-mx-auto w-100">
+                <HeaderTemplate>
+                    <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
+                        <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
+                            <RadzenIcon Icon="account_box" class="rz-mr-1" Style="color:#1B9968" /><b style="color:#1B9968">Datos Residencia</b>
+                        </RadzenText>
+                    </RadzenText>
+                </HeaderTemplate>
+                <ChildContent>
+                    <RadzenCard class="rz-mt-4">
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Ciudad de Residencia:</RadzenText>
+                        <PaisDeptCiudadView LocalizacionChange="@PaisDepartamentoCiudadResidencia"></PaisDeptCiudadView>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Direccion:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.DirRes class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Barrio:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.Barrio class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Telefono:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.TelRes class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Celular:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.TelCel class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Correo Electronico:</RadzenText>
+                        <RadzenTextBox style="display: block" Name="Email" @bind-Value=@Model.EMail class="w-100" />
+                        <RadzenEmailValidator Component="Email" Text="Provide a valid email address" Popup=@popup Style="position: absolute" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Correo Alterno:</RadzenText>
+                        <RadzenTextBox style="display: block" Name="Email" @bind-Value=@Model.EMailAlt class="w-100" />
+                        <RadzenEmailValidator Component="Email" Text="Provide a valid email address" Popup=@popup Style="position: absolute" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">En Caso de Emergencia Avisar a:</RadzenText>
+                        <RadzenTextArea @bind-Value=@Model.AviEmp class="w-100" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Autoriza el manejo de datos a la compañía?:</RadzenText>
+                        <RadzenRadioButtonList @bind-Value=@autoriza TValue="int" Orientation=Orientation.Vertical class="mb-5">
+                            <Items>
+                                <RadzenRadioButtonListItem Text="Si" Value="1" />
+                                <RadzenRadioButtonListItem Text="No" Value="2" />
+                            </Items>
+                        </RadzenRadioButtonList>
+                    </RadzenCard>
+                </ChildContent>
+            </RadzenPanel>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-6 col-sm-12">
-        <RadzenPanel AllowCollapse="true" Class="rz-my-10 rz-mx-auto w-100">
-            <HeaderTemplate>
-                <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <RadzenPanel AllowCollapse="true" Class="rz-my-10 rz-mx-auto w-100">
+                <HeaderTemplate>
                     <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
-                        <RadzenIcon Icon="account_box" class="rz-mr-1" Style="color:#1B9968" /><b style="color:#1B9968">Datos Basicos del Empleado</b>
+                        <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
+                            <RadzenIcon Icon="account_box" class="rz-mr-1" Style="color:#1B9968" /><b style="color:#1B9968">Datos Salariales</b>
+                        </RadzenText>
                     </RadzenText>
-                </RadzenText>
-            </HeaderTemplate>
-            <ChildContent>
-                <RadzenCard class="rz-mt-4">
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Numero de Pasaporte:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.NroPsp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Pais de Emision:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.CodPaiEmisorPsp ReadOnly="true" class="col-1" />
-                    <RadzenDropDownDataGrid @bind-Value=@Model.CodPaiEmisorPsp Data=@paises TextProperty="NomPai" ValueProperty="CodPai"
-                                            class="col-10" LoadData=@LoadDataPaises Count=@countPaises AllowClear="true" AllowFiltering="true">
-                        <Columns>
-                            <RadzenDropDownDataGridColumn Property="CodPai" Title="Codigo Pais" Width="100px" />
-                            <RadzenDropDownDataGridColumn Property="NomPai" Title="Nombre Pais" Width="200px" />
-                        </Columns>
-                    </RadzenDropDownDataGrid>
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Fecha de Expedicion:</RadzenText>
-                    <RadzenDatePicker @bind-Value=@Model.FecExpPsp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Fecha de Vencimiento:</RadzenText>
-                    <RadzenDatePicker @bind-Value=@Model.FecVencPsp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Clase Libreta Militar:</RadzenText>
-                    <RadzenDropDown @bind-Value=@Model.ClaLib Data=@clasesLib TextProperty="nomClaseLib" ValueProperty="codClaseLib" Style="width: 100%; max-width: 400px;" class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Numero de Libreta Militar:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.NumLib class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Distrito de Libreta Militar:</RadzenText>
-                    <RadzenNumeric @bind-Value=@Model.DimLib class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Nacionalidad:</RadzenText>
-                    <RadzenDropDown @bind-Value=@Model.NacEmp Data=@nacionalidades TextProperty="nomNac" ValueProperty="codNac" Style="width: 100%; max-width: 400px;" class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Grupo Sanguineo:</RadzenText>
-                    <RadzenDropDown @bind-Value=@Model.GruSan Data=@gruposSang Style="width: 100%; max-width: 400px;" class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Factor RH:</RadzenText>
-                    <RadzenDropDown @bind-Value=@Model.FacRhh Data=@factorRh Style="width: 100%; max-width: 400px;" class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Estatura:</RadzenText>
-                    <RadzenNumeric @bind-Value=@Model.TamEmp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Peso:</RadzenText>
-                    <RadzenNumeric @bind-Value=@Model.PesEmp class="col-12" />
-                </RadzenCard>
-            </ChildContent>
-        </RadzenPanel>
+                </HeaderTemplate>
+                <ChildContent>
+                    <RadzenCard class="rz-mt-4">
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Regimen Salarial:</RadzenText>
+                        <RadzenDropDown @bind-Value=@Model.RegSal Data=@regimenSal TextProperty="nomRegSal" ValueProperty="codRegSal" Style="width: 100%; max-width: 400px;" class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Formas de Pago:</RadzenText>
+                        <RadzenNumeric @bind-Value=@Model.TipPag ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.TipPag Data=@formasPagos TextProperty="NomPag" ValueProperty="TipPag"
+                                                class="col-10" LoadData=@LoadDataFormasPago Count=@countFormasPago AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="TipPag" Title="Codigo Forma de Pago" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="NomPag" Title="Nombre Forma de Pago" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Codigo del Banco:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CodBan ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.CodBan Data=@bancos TextProperty="NomBan" ValueProperty="CodBan"
+                                                class="col-10" LoadData=@LoadDataBanco Count=@countBanco AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="CodBan" Title="Codigo del Banco" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="NomBan" Title="Nombre del Banco" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Numero de Cuenta:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CtaBan class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Pago Electronico:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CodPagelec class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Modalidad Retencion:</RadzenText>
+                        <RadzenDropDown @bind-Value=@Model.MetRet Data=@modalidadRet TextProperty="nomModRet" ValueProperty="codModRet" Style="width: 100%; max-width: 400px;" class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Porcentaje de Retencion:</RadzenText>
+                        <RadzenNumeric @bind-Value=@Model.PorRet class="col-12" Min="1" Max="10" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3" >Valor Salud Año Anterior:</RadzenText>
+                        <RadzenNumeric @bind-Value=@Model.PrmSal class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Cálculo IMAN:</RadzenText>
+                        <RadzenDropDown @bind-Value=@Model.IndDecRenta Data=@indDecRen TextProperty="nomIndDecRen" ValueProperty="codIndDecRen" Style="width: 100%; max-width: 400px;" class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Estabilidad Laboral:</RadzenText>
+                        <RadzenCheckBox @bind-Value=@Model.IndEstlabref Name="CheckBox1" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Vacaciones:</RadzenText>
+                        <RadzenDropDown @bind-Value=@Model.IndVac Data=@indVac TextProperty="nomIndVac" ValueProperty="codIndVac" Style="width: 100%; max-width: 400px;" class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Dias Vacaciones por Año:</RadzenText>
+                        <RadzenNumeric @bind-Value=@Model.DiaVac class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Sabado es Habil:</RadzenText>
+                        <RadzenCheckBox @bind-Value=indSab Name="CheckBox2" TValue="bool" Change=@(args => Model.IndSab=args?1:0) />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Pagar Dia 31:</RadzenText>
+                        <RadzenCheckBox @bind-Value=@pagoDia Name="CheckBox3" TValue="bool" Change=@(args => Model.IndM31=args?1:0) />
+                    </RadzenCard>
+                </ChildContent>
+            </RadzenPanel>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <RadzenPanel AllowCollapse="true" Class="rz-my-10 rz-mx-auto w-100">
+                <HeaderTemplate>
+                    <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
+                        <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
+                            <RadzenIcon Icon="account_box" class="rz-mr-1" Style="color:#1B9968" /><b style="color:#1B9968">Datos del Contrato</b>
+                        </RadzenText>
+                    </RadzenText>
+                </HeaderTemplate>
+                <ChildContent>
+                    <RadzenCard class="rz-mt-4">
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Numero de Contrato:</RadzenText>
+                        <RadzenTextBox @bind-Value=@numCont class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Fecha de Celebracion:</RadzenText>
+                        <RadzenDatePicker @bind-Value=@fecCont class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Tipo de Contrato:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.TipCon ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.TipCon Data=@tipCon TextProperty="NomCon" ValueProperty="TipCon"
+                                                class="col-10" LoadData=@LoadDataTipCon Count=@countTipCon AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="TipCon" Title="Codigo del Contrato" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="NomCon" Title="Nombre del Contrato" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Tipo de Teletrabajo:</RadzenText>
+                        <RadzenDropDown AllowClear="true" @bind-Value=tipTrabajo
+                                        LoadData=@LoadDataTipTrabajo AllowFiltering="true"
+                                        Data=@tipoTrabajo TextProperty="Descripcion" ValueProperty="TipTrabajo" Style="width: 100%; max-width: 400px;" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Estado Laboral del Empleado:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.EstLab ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.EstLab Data=@estLab TextProperty="NomEst" ValueProperty="EstLab"
+                                                class="col-10" LoadData=@LoadDataEstLab Count=@countEstLab AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="EstLab" Title="Codigo del Estado" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="NomEst" Title="Nombre del Estado" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Ciudad de Contratacion:</RadzenText>
+                        <PaisDeptCiudadView LocalizacionChange="@PaisDepartamentoCiudadContratacion"></PaisDeptCiudadView>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Notas al Contrato:</RadzenText>
+                        <RadzenTextArea @bind-Value=@notCon class="w-100" />
+                    </RadzenCard>
+                </ChildContent>
+            </RadzenPanel>
+            <RadzenPanel AllowCollapse="true" Class="rz-my-10 rz-mx-auto w-100">
+                <HeaderTemplate>
+                    <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
+                        <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
+                            <RadzenIcon Icon="account_box" class="rz-mr-1" Style="color:#1B9968" /><b style="color:#1B9968">Deducibles</b>
+                        </RadzenText>
+                    </RadzenText>
+                </HeaderTemplate>
+                <ChildContent>
+                    <RadzenCard class="rz-mt-4">
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Vivienda:</RadzenText>
+                        <RadzenNumeric @bind-Value=@dedViv class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Salud/Medicina Prepagada:</RadzenText>
+                        <RadzenNumeric @bind-Value=@dedSal class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Dependiente:</RadzenText>
+                        <RadzenCheckBox @bind-Value=@indDep Name="CheckBox1" />
+                    </RadzenCard>
+                </ChildContent>
+            </RadzenPanel>
+        </div>
     </div>
-    <div class="col-md-6 col-sm-12">
-        <RadzenPanel AllowCollapse="true" Class="rz-my-10 rz-mx-auto w-100">
-            <HeaderTemplate>
-                <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <RadzenPanel AllowCollapse="true" Class="rz-my-10 rz-mx-auto w-100">
+                <HeaderTemplate>
                     <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
-                        <RadzenIcon Icon="account_box" class="rz-mr-1" Style="color:#1B9968" /><b style="color:#1B9968">Datos Residencia</b>
+                        <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
+                            <RadzenIcon Icon="account_box" class="rz-mr-1" Style="color:#1B9968" /><b style="color:#1B9968">Estructura de Costos</b>
+                        </RadzenText>
                     </RadzenText>
-                </RadzenText>
-            </HeaderTemplate>
-            <ChildContent>
-                <RadzenCard class="rz-mt-4">
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Ciudad de Residencia:</RadzenText>
-                    <PaisDeptCiudadView LocalizacionChange="@PaisDepartamentoCiudadResidencia"></PaisDeptCiudadView>
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Direccion:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.DirRes class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Barrio:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.Barrio class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Telefono:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.TelRes class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Celular:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.TelCel class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Correo Electronico:</RadzenText>
-                    <RadzenTextBox style="display: block" Name="Email" @bind-Value=@Model.EMail class="w-100" />
-                    <RadzenEmailValidator Component="Email" Text="Provide a valid email address" Popup=@popup Style="position: absolute" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Correo Alterno:</RadzenText>
-                    <RadzenTextBox style="display: block" Name="Email" @bind-Value=@Model.EMailAlt class="w-100" />
-                    <RadzenEmailValidator Component="Email" Text="Provide a valid email address" Popup=@popup Style="position: absolute" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">En Caso de Emergencia Avisar a:</RadzenText>
-                    <RadzenTextArea @bind-Value=@Model.AviEmp class="w-100" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Autoriza el manejo de datos a la compañía?:</RadzenText>
-                    <RadzenRadioButtonList @bind-Value=@Model.AutDat TValue="int" Orientation=Orientation.Vertical class="mb-5">
-                        <Items>
-                            <RadzenRadioButtonListItem Text="Si" Value="1" />
-                            <RadzenRadioButtonListItem Text="No" Value="2" />
-                        </Items>
-                    </RadzenRadioButtonList>
-                </RadzenCard>
-            </ChildContent>
-        </RadzenPanel>
+                </HeaderTemplate>
+                <ChildContent>
+                    <RadzenCard class="rz-mt-4">
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Compañia:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CodCia ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.CodCia Data=@genCompaniums TextProperty="NomCia" ValueProperty="CodCia"
+                                                class="col-10" LoadData=@LoadDataGenCompanium Count=@countGenCompanium AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="CodCia" Title="Codigo compañia" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="NomCia" Title="Nombre compañia" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Sucursal:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CodSuc ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.CodSuc Data=@genSucursales TextProperty="NomSuc" ValueProperty="CodSuc"
+                                                class="col-10" LoadData=@LoadDataGenSucursal Count=@countGenSucursal AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="CodSuc" Title="Codigo sucursal" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="NomSuc" Title="Nombre sucursal" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Centro de Costos:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CodCco ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.CodCco Data=@genCcostos TextProperty="NomCco" ValueProperty="CodCco"
+                                                class="col-10" LoadData=@LoadDataGenCcosto Count=@countGenCcosto AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="CodCco" Title="Codigo centro costos" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="NomCco" Title="Nombre centro costos" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Distribucion por centro de costos local:</RadzenText>
+                        <RadzenCheckBox @bind-Value=@IndDiscco Name="CheckBox3" TValue="bool" Change=@(args => Model.IndDiscco=args?(byte)1:(byte)0) />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Distribucion por centro de costos Niif:</RadzenText>
+                        <RadzenCheckBox @bind-Value=@IndDiscconif Name="CheckBox3" TValue="bool" Change=@(args => Model.IndDiscconif=args?(byte)1:(byte)0) />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Clasificador 1:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CodCl1 ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.CodCl1 Data=@genClasif1 TextProperty="Nombre" ValueProperty="Codigo"
+                                                class="col-10" LoadData=@LoadDataGenClasif1 Count=@countGenClasif1 AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="Codigo" Title="Codigo Tipo" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="Nombre" Title="Nombre Tipo" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Clasificador 2:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CodCl2 ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.CodCl2 Data=@genClasif2 TextProperty="Nombre" ValueProperty="Codigo"
+                                                class="col-10" LoadData=@LoadDataGenClasif2 Count=@countGenClasif2 AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="Codigo" Title="Codigo Tipo" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="Nombre" Title="Nombre Tipo" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Clasificador 3:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CodCl3 ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.CodCl3 Data=@genClasif3 TextProperty="Nombre" ValueProperty="Codigo"
+                                                class="col-10" LoadData=@LoadDataGenClasif3 Count=@countGenClasif3 AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="Codigo" Title="Codigo Tipo" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="Nombre" Title="Nombre Tipo" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Clasificador 4:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CodCl4 ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.CodCl4 Data=@genClasif4 TextProperty="Nombre" ValueProperty="Codigo"
+                                                class="col-10" LoadData=@LoadDataGenClasif4 Count=@countGenClasif4 AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="Codigo" Title="Codigo Tipo" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="Nombre" Title="Nombre Tipo" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Clasificador 5:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CodCl5 ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.CodCl5 Data=@genClasif5 TextProperty="Nombre" ValueProperty="Codigo"
+                                                class="col-10" LoadData=@LoadDataGenClasif5 Count=@countGenClasif5 AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="Codigo" Title="Codigo Tipo" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="Nombre" Title="Nombre Tipo" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Clasificador 6:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CodCl6 ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.CodCl6 Data=@genClasif6 TextProperty="Nombre" ValueProperty="Codigo"
+                                                class="col-10" LoadData=@LoadDataGenClasif6 Count=@countGenClasif6 AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="Codigo" Title="Codigo Tipo" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="Nombre" Title="Nombre Tipo" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Clasificador 7:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CodCl7 ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.CodCl7 Data=@genClasif7 TextProperty="Nombre" ValueProperty="Codigo"
+                                                class="col-10" LoadData=@LoadDataGenClasif7 Count=@countGenClasif7 AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="Codigo" Title="Codigo Tipo" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="Nombre" Title="Nombre Tipo" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Area:</RadzenText>
+                        <RadzenTextBox @bind-Value=@codArea ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@codArea Data=@gthAreas TextProperty="DesArea" ValueProperty="CodArea"
+                                                class="col-10" LoadData=@LoadDataGthArea Count=@countGthArea AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="CodArea" Title="Codigo Area" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="DesArea" Title="Nombre Area" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Sucursal Seguridad Social:</RadzenText>
+                        <RadzenTextBox @bind-Value=@codsucSS ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@codsucSS Data=@rhhSucursalSss TextProperty="Descripcion" ValueProperty="SucSs"
+                                                class="col-10" LoadData=@LoadDataRhhSucursalSs Count=@countRhhSucursalSs AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="SucSs" Title="Codigo sucursal" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="Descripcion" Title="Nombre sucursal" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Centro de Trabajo:</RadzenText>
+                        <RadzenNumeric @bind-Value=@codCT ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@codCT Data=@rhhCentroTrabs TextProperty="Descripcion" ValueProperty="CodCt" 
+                                                class="col-10" LoadData=@LoadDataRhhCentroTrab Count=@countRhhCentroTrab AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="CodCt" Title="Codigo centro de trabajo" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="Descripcion" Title="Nombre centro de trabajo" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Cuenta de Gastos Local:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CtaGas ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.CtaGas Data=@rhhTbCtaGas TextProperty="Descripcion" ValueProperty="PreCtaGas"
+                                                class="col-10" LoadData=@LoadDataRhhTbCtaGa Count=@countRhhTbCtaGa AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="PreCtaGas" Title="Cuenta de gastos" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="Descripcion" Title="Nombre Cuenta de gastos" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Cuenta de Gastos Niif:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CtaGasnif ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.CtaGasnif Data=@rhhTbCtaGas TextProperty="Descripcion" ValueProperty="PreCtaGas"
+                                                class="col-10" LoadData=@LoadDataRhhTbCtaGa Count=@countRhhTbCtaGa AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="PreCtaGas" Title="Cuenta de gastos" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="Descripcion" Title="Nombre Cuenta de gastos" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Observaciones:</RadzenText>
+                        <RadzenTextArea @bind-Value=@observacion class="w-100" />
+                    </RadzenCard>
+                </ChildContent>
+            </RadzenPanel>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <RadzenPanel AllowCollapse="true" Class="rz-my-10 rz-mx-auto w-100">
+                <HeaderTemplate>
+                    <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
+                        <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
+                            <RadzenIcon Icon="account_box" class="rz-mr-1" Style="color:#1B9968" /><b style="color:#1B9968">Datos de la Contratacion</b>
+                        </RadzenText>
+                    </RadzenText>
+                </HeaderTemplate>
+                <ChildContent>
+                    <RadzenCard class="rz-mt-4">
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Salario Basico:</RadzenText>
+                        <RadzenNumeric @bind-Value=@Model.SalBas class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Lider:</RadzenText>
+                        <RadzenCheckBox @bind-Value=@Model.IndLider Name="CheckBox3" TValue="bool?"  />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Cargo:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CodCar ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.CodCar Data=@rhhCargos TextProperty="NomCar" ValueProperty="CodCar"
+                                                class="col-10" LoadData=@LoadDataRhhCargo Count=@countRhhCargo AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="CodCar" Title="Codigo del Cargo" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="NomCar" Title="Nombre del Cargo" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Ciudad de Labor:</RadzenText>
+                        <PaisDeptCiudadView LocalizacionChange="@PaisDepartamentoCiudadLabor"></PaisDeptCiudadView>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Fecha Ingreso:</RadzenText>
+                        <RadzenDatePicker @bind-Value=@FecIng class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Fecha de Finalizacion:</RadzenText>
+                        <RadzenDatePicker @bind-Value=@FecFin class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">No.Dias Periodo Pruebas:</RadzenText>
+                        <RadzenNumeric @bind-Value=@DiasPerPba class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Fecha de Finalizacion Periodo Pruebas:</RadzenText>
+                        <RadzenDatePicker @bind-Value=@FecFinPerPba class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Modo de Liquidacion:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.ModLiq ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.ModLiq Data=@rhhTbModLiqes TextProperty="DesMod" ValueProperty="ModLiq"
+                                                class="col-10" LoadData=@LoadDataRhhTbModLiq Count=@countRhhTbModLiq AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="ModLiq" Title="Codigo Modo liquidacion" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="DesMod" Title="Nombre Modo liquidacion" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Horas Contratadas al Mes:</RadzenText>
+                        <RadzenNumeric @bind-Value=@Model.HorasMes class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Valor Hora:</RadzenText>
+                        <RadzenNumeric @bind-Value=@Model.ValHora class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Clase Salario:</RadzenText>
+                        <RadzenNumeric @bind-Value=@Model.ClaSal ReadOnly="true" class="col-1"  />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.ClaSal Data=@rhhTbclasals TextProperty="Descripcion" ValueProperty="ClaSal" 
+                                                class="col-10" LoadData=@LoadDataRhhTbclasal Count=@countRhhTbclasal AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="ClaSal" Title="Codigo Clase de Salario" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="Descripcion" Title="Nombre Clase de Salario" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Fondo de salud:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.FdoSal ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.FdoSal Data=@rhhTbfondos TextProperty="NomFdo" ValueProperty="CodFdo"
+                                                class="col-10" LoadData=@LoadDataRhhTbfondo Count=@countRhhTbfondo AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="CodFdo" Title="Codigo del Fondo" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="NomFdo" Title="Nombre del Fondo" Width="200px" />
+                                <RadzenDropDownDataGridColumn Property="TipFdo" Title="Tipo del Fondo" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Fondo de pension:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.FdoPen ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.FdoPen Data=@rhhTbfondos TextProperty="NomFdo" ValueProperty="CodFdo"
+                                                class="col-10" LoadData=@LoadDataRhhTbfondo Count=@countRhhTbfondo AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="CodFdo" Title="Codigo del Fondo" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="NomFdo" Title="Nombre del Fondo" Width="200px" />
+                                <RadzenDropDownDataGridColumn Property="TipFdo" Title="Tipo del Fondo" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Caja de Compensacion:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.CcfEmp ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.CcfEmp Data=@rhhTbfondos TextProperty="NomFdo" ValueProperty="CodFdo"
+                                                class="col-10" LoadData=@LoadDataRhhTbfondo Count=@countRhhTbfondo AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="CodFdo" Title="Codigo del Fondo" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="NomFdo" Title="Nombre del Fondo" Width="200px" />
+                                <RadzenDropDownDataGridColumn Property="TipFdo" Title="Tipo del Fondo" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Administradora de Riesgos Laborales:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.FdoAte ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.FdoAte Data=@rhhTbfondos TextProperty="NomFdo" ValueProperty="CodFdo"
+                                                class="col-10" LoadData=@LoadDataRhhTbfondo Count=@countRhhTbfondo AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="CodFdo" Title="Codigo del Fondo" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="NomFdo" Title="Nombre del Fondo" Width="200px" />
+                                <RadzenDropDownDataGridColumn Property="TipFdo" Title="Tipo del Fondo" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Porcentaje ARL:</RadzenText>
+                        <RadzenNumeric @bind-Value=@Model.PorAte class="col-12" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Fondo Cesantias:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.FdoCes ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.FdoCes Data=@rhhTbfondos TextProperty="NomFdo" ValueProperty="CodFdo"
+                                                class="col-10" LoadData=@LoadDataRhhTbfondo Count=@countRhhTbfondo AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="CodFdo" Title="Codigo del Fondo" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="NomFdo" Title="Nombre del Fondo" Width="200px" />
+                                <RadzenDropDownDataGridColumn Property="TipFdo" Title="Tipo del Fondo" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Tipo Medidas Certificadas (DIAN):</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.ConceptoDian2280 ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.ConceptoDian2280 Data=@rhhTbmedidaDian2280s TextProperty="Descripcion" ValueProperty="Concepto"
+                                                class="col-10" LoadData=@LoadDataRhhTbmedidaDian2280 Count=@countRhhTbmedidaDian2280 AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="Concepto" Title="Codigo de Tipo Medidas" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="Descripcion" Title="Nombre de Tipo Medidas" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Tipo Cotizante:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.TipCot ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.TipCot Data=@rhhTbTipCotizas TextProperty="DesCot" ValueProperty="TipCot"
+                                                class="col-10" LoadData=@LoadDataRhhTbTipCotiza Count=@countRhhTbTipCotiza AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="TipCot" Title="Codigo Tipo Cotizante" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="DesCot" Title="Nombre Tipo Cotizante" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">SubTipo Cotizante:</RadzenText>
+                        <RadzenTextBox @bind-Value=@Model.SubTipCot ReadOnly="true" class="col-1" />
+                        <RadzenDropDownDataGrid @bind-Value=@Model.SubTipCot Data=@rhhTbSubTipCotizas TextProperty="DesSubTip" ValueProperty="SubTipCot"
+                                                class="col-10" LoadData=@LoadDataRhhTbSubTipCotiza Count=@countRhhTbSubTipCotiza AllowClear="true" AllowFiltering="true">
+                            <Columns>
+                                <RadzenDropDownDataGridColumn Property="SubTipCot" Title="Codigo SubTipo Cotizante" Width="100px" />
+                                <RadzenDropDownDataGridColumn Property="DesSubTip" Title="Nombre SubTipo Cotizante" Width="200px" />
+                            </Columns>
+                        </RadzenDropDownDataGrid>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Extranjero no Pension::</RadzenText>
+                        <RadzenCheckBox @bind-Value=@Model.IndExtranjero Name="CheckBox3" TValue="bool" />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Pago por Dias:</RadzenText>
+                        <RadzenCheckBox @bind-Value=@Model.IndResiExtjero Name="CheckBox3" TValue="bool"  />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Reside en el Extranjero:</RadzenText>
+                        <RadzenCheckBox @bind-Value=@Model.IndPdias Name="CheckBox3" TValue="bool"  />
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Es Variable - Comision:</RadzenText>
+                        <RadzenCheckBox @bind-Value=@IndSvar Name="CheckBox3" TValue="bool" Change=@(args => Model.IndSvar=args?(byte)1:(byte)0) />
+                    </RadzenCard>
+                </ChildContent>
+            </RadzenPanel>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-6 col-sm-12">
-        <RadzenPanel AllowCollapse="true" Class="rz-my-10 rz-mx-auto w-100">
-            <HeaderTemplate>
-                <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
-                    <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
-                        <RadzenIcon Icon="account_box" class="rz-mr-1" Style="color:#1B9968" /><b style="color:#1B9968">Datos Salariales</b>
-                    </RadzenText>
-                </RadzenText>
-            </HeaderTemplate>
-            <ChildContent>
-                <RadzenCard class="rz-mt-4">
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Regimen Salarial:</RadzenText>
-                    <RadzenDropDown @bind-Value=@Model.RegSal Data=@regimenSal TextProperty="nomRegSal" ValueProperty="codRegSal" Style="width: 100%; max-width: 400px;" class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Formas de Pago:</RadzenText>
-                    <RadzenNumeric @bind-Value=@Model.TipPag ReadOnly="true" class="col-1" />
-                    <RadzenDropDownDataGrid @bind-Value=@Model.TipPag Data=@formasPagos TextProperty="NomPag" ValueProperty="TipPag"
-                                            class="col-10" LoadData=@LoadDataFormasPago Count=@countFormasPago AllowClear="true" AllowFiltering="true">
-                        <Columns>
-                            <RadzenDropDownDataGridColumn Property="TipPag" Title="Codigo Forma de Pago" Width="100px" />
-                            <RadzenDropDownDataGridColumn Property="NomPag" Title="Nombre Forma de Pago" Width="200px" />
-                        </Columns>
-                    </RadzenDropDownDataGrid>
-                    
-                   
-                   
-                </RadzenCard>
-            </ChildContent>
-        </RadzenPanel>
-    </div>
-    <div class="col-md-6 col-sm-12">
-        <RadzenPanel AllowCollapse="true" Class="rz-my-10 rz-mx-auto w-100">
-            <HeaderTemplate>
-                <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
-                    <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
-                        <RadzenIcon Icon="account_box" class="rz-mr-1" Style="color:#1B9968" /><b style="color:#1B9968">Datos del Contrato</b>
-                    </RadzenText>
-                </RadzenText>
-            </HeaderTemplate>
-            <ChildContent>
-                <RadzenCard class="rz-mt-4">
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Primer Nombre:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.CodEmp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Segundo Nombre:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.CodEmp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Primer Apellido:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.Ap1Emp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Segundo Apellido:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.Ap2Emp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Fecha de Nacimiento:</RadzenText>
-                    <RadzenDatePicker @bind-Value=@Model.FecNac class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Ciudad de Nacimiento:</RadzenText>
-                   
-                </RadzenCard>
-            </ChildContent>
-        </RadzenPanel>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-6 col-sm-12">
-        <RadzenPanel AllowCollapse="true" Class="rz-my-10 rz-mx-auto w-100">
-            <HeaderTemplate>
-                <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
-                    <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
-                        <RadzenIcon Icon="account_box" class="rz-mr-1" Style="color:#1B9968" /><b style="color:#1B9968">Estructura de Costos</b>
-                    </RadzenText>
-                </RadzenText>
-            </HeaderTemplate>
-            <ChildContent>
-                <RadzenCard class="rz-mt-4">
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Primer Nombre:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.CodEmp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Segundo Nombre:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.CodEmp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Primer Apellido:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.Ap1Emp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Segundo Apellido:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.Ap2Emp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Fecha de Nacimiento:</RadzenText>
-                    <RadzenDatePicker @bind-Value=@Model.FecNac class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Ciudad de Nacimiento:</RadzenText>
-                   
-                    
-                </RadzenCard>
-            </ChildContent>
-        </RadzenPanel>
-    </div>
-    <div class="col-md-6 col-sm-12">
-        <RadzenPanel AllowCollapse="true" Class="rz-my-10 rz-mx-auto w-100">
-            <HeaderTemplate>
-                <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
-                    <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
-                        <RadzenIcon Icon="account_box" class="rz-mr-1" Style="color:#1B9968" /><b style="color:#1B9968">Deducibles</b>
-                    </RadzenText>
-                </RadzenText>
-            </HeaderTemplate>
-            <ChildContent>
-                <RadzenCard class="rz-mt-4">
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Primer Nombre:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.CodEmp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Segundo Nombre:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.CodEmp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Primer Apellido:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.Ap1Emp class="col-12" />
-                </RadzenCard>
-            </ChildContent>
-        </RadzenPanel>
-        <RadzenPanel AllowCollapse="true" Class="rz-my-10 rz-mx-auto w-100">
-            <HeaderTemplate>
-                <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
-                    <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">
-                        <RadzenIcon Icon="account_box" class="rz-mr-1" Style="color:#1B9968" /><b style="color:#1B9968">Datos de la Contratacion</b>
-                    </RadzenText>
-                </RadzenText>
-            </HeaderTemplate>
-            <ChildContent>
-                <RadzenCard class="rz-mt-4">
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Primer Nombre:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.CodEmp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Segundo Nombre:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.CodEmp class="col-12" />
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Primer Apellido:</RadzenText>
-                    <RadzenTextBox @bind-Value=@Model.Ap1Emp class="col-12" />
-                </RadzenCard>
-            </ChildContent>
-        </RadzenPanel>
-    </div>
-</div>
-<RadzenStack AlignItems="AlignItems.Center" Class="rz-mx-auto rz-my-12" JustifyContent="JustifyContent.Center">
-    <RadzenButton Click=@(args => Save()) Text="Grabar" ButtonStyle="ButtonStyle.Primary" />
-</RadzenStack>
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="1rem" Class="rz-mt-8 rz-mb-4" AlignItems="AlignItems.Center">
+        <RadzenButton ButtonType="ButtonType.Submit" Size="ButtonSize.Large" Icon="save" Text="Save" />
+        <RadzenButton Click=@Editar  ButtonStyle="ButtonStyle.Primary" Text="Editar" />
+        <RadzenButton Click=@SavaButton ButtonStyle="ButtonStyle.Primary" Text="salvar" />
+    </RadzenStack>
+</RadzenTemplateForm>

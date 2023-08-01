@@ -10,13 +10,13 @@ namespace Novasoft.Client.Services
         {
             _httpClient = httpClient;
         }
-        public async Task<IEnumerable<GenBanco>?> GetFormapago()
+        public async Task<IEnumerable<GenBanco>?> GetBancos()
         {
             return await _httpClient.GetFromJsonAsync<IEnumerable<GenBanco>>($"api/GenBancos");
         }
     }
     public interface IGenBancosServices
     {
-        Task<IEnumerable<GenBanco>?> GetFormapago();
+        Task<IEnumerable<GenBanco>?> GetBancos();
     }
 }

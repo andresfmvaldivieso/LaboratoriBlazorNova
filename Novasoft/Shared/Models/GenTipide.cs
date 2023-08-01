@@ -30,5 +30,5 @@ public partial class GenTipide
     /// </summary>
     public string? CodSpv { get; set; }
 
-    public virtual ICollection<RhhEmplea> RhhEmpleas { get; set; } = new List<RhhEmplea>();
+    
 }

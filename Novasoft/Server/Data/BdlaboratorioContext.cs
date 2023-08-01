@@ -39,7 +39,9 @@ public partial class BdlaboratorioContext : DbContext
 
     public virtual DbSet<GenCompanium> GenCompania { get; set; }
 
-    public virtual DbSet<GenDepto> GenDeptos { get; set; }
+    public virtual DbSet<gen_deptos> GenDeptos { get; set; }
+
+    public virtual DbSet<GenFormapago> GenFormapagos { get; set; }
 
     public virtual DbSet<GenGrupoetnico> GenGrupoetnicos { get; set; }
 
@@ -51,6 +53,8 @@ public partial class BdlaboratorioContext : DbContext
 
     public virtual DbSet<GenTipide> GenTipides { get; set; }
 
+    public virtual DbSet<GthArea> GthAreas { get; set; }
+
     public virtual DbSet<GthEstCivil> GthEstCivils { get; set; }
 
     public virtual DbSet<GthGenero> GthGeneros { get; set; }
@@ -59,15 +63,29 @@ public partial class BdlaboratorioContext : DbContext
 
     public virtual DbSet<RhhCargo> RhhCargos { get; set; }
 
+    public virtual DbSet<RhhCentroTrab> RhhCentroTrabs { get; set; }
+
     public virtual DbSet<RhhEmplea> RhhEmpleas { get; set; }
 
     public virtual DbSet<RhhRanVac> RhhRanVacs { get; set; }
 
+    public virtual DbSet<RhhSucursalSs> RhhSucursalSses { get; set; }
+
+    public virtual DbSet<RhhTbCtaGa> RhhTbCtaGas { get; set; }
+
+    public virtual DbSet<RhhTbModLiq> RhhTbModLiqs { get; set; }
+
     public virtual DbSet<RhhTbSubTipCotiza> RhhTbSubTipCotizas { get; set; }
+
+    public virtual DbSet<RhhTbTipCotiza> RhhTbTipCotizas { get; set; }
 
     public virtual DbSet<RhhTbTipPag> RhhTbTipPags { get; set; }
 
+    public virtual DbSet<RhhTbTipTrabajo> RhhTbTipTrabajos { get; set; }
+
     public virtual DbSet<RhhTbclaest> RhhTbclaests { get; set; }
+
+    public virtual DbSet<RhhTbclasal> RhhTbclasals { get; set; }
 
     public virtual DbSet<RhhTbemppen> RhhTbemppens { get; set; }
 
@@ -83,13 +101,25 @@ public partial class BdlaboratorioContext : DbContext
 
     public virtual DbSet<RhhTbtipvinculacion> RhhTbtipvinculacions { get; set; }
 
+    public virtual DbSet<RhhTipcon> RhhTipcons { get; set; }
+
     public virtual DbSet<RhhTipoliq> RhhTipoliqs { get; set; }
 
     public virtual DbSet<SisAplicacion> SisAplicacions { get; set; }
 
+    public virtual DbSet<WebGridmaestro> WebGridmaestros { get; set; }
+
+    public virtual DbSet<WebLabelmaestro> WebLabelmaestros { get; set; }
+
+    public virtual DbSet<WebMaestro> WebMaestros { get; set; }
+
+    public virtual DbSet<WebMaestrosgen> WebMaestrosgens { get; set; }
+
+    public virtual DbSet<WebPaginasmae> WebPaginasmaes { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=E-C5G2DS3;Initial Catalog=BDLaboratorio;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+        => optionsBuilder.UseSqlServer("Data Source=E-C5G2DS3;Initial Catalog=BDGHSecPublico1;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -658,9 +688,9 @@ public partial class BdlaboratorioContext : DbContext
                 .HasColumnName("tip_pagpen");
         });
 
-        modelBuilder.Entity<GenDepto>(entity =>
+        modelBuilder.Entity<gen_deptos>(entity =>
         {
-            entity.HasKey(e => new { e.CodPai, e.CodDep }).IsClustered(false);
+            entity.HasKey(e => new { e.cod_pai, e.cod_dep }).IsClustered(false);
 
             entity.ToTable("gen_deptos", tb =>
                 {
@@ -668,19 +698,19 @@ public partial class BdlaboratorioContext : DbContext
                     tb.HasTrigger("tr_gen_deptos_upd_replicadatos");
                 });
 
-            entity.Property(e => e.CodPai)
+            entity.Property(e => e.cod_pai)
                 .HasMaxLength(3)
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasComment("Pais")
                 .HasColumnName("cod_pai");
-            entity.Property(e => e.CodDep)
+            entity.Property(e => e.cod_dep)
                 .HasMaxLength(2)
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasComment("Departamento")
                 .HasColumnName("cod_dep");
-            entity.Property(e => e.CodDepExtr)
+            entity.Property(e => e.cod_dep_Extr)
                 .HasMaxLength(20)
                 .HasComment("Campo llave de homologación para el sistema externo")
                 .HasColumnName("cod_dep_Extr");
@@ -694,13 +724,13 @@ public partial class BdlaboratorioContext : DbContext
             entity.Property(e => e.IndPol)
                 .HasComment("Ind politico")
                 .HasColumnName("ind_pol");
-            entity.Property(e => e.NomDep)
+            entity.Property(e => e.nom_dep)
                 .HasMaxLength(30)
                 .IsUnicode(false)
                 .IsFixedLength()
                 .HasComment("Nombre")
                 .HasColumnName("nom_dep");
-            entity.Property(e => e.SiglaDep)
+            entity.Property(e => e.sigla_dep)
                 .HasMaxLength(5)
                 .IsUnicode(false)
                 .IsFixedLength()
@@ -708,9 +738,32 @@ public partial class BdlaboratorioContext : DbContext
                 .HasColumnName("sigla_dep");
 
             entity.HasOne(d => d.CodPaiNavigation).WithMany(p => p.GenDeptos)
-                .HasForeignKey(d => d.CodPai)
+                .HasForeignKey(d => d.cod_pai)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_gen_deptos_gen_paises");
+        });
+
+        modelBuilder.Entity<GenFormapago>(entity =>
+        {
+            entity.HasKey(e => e.CodPag);
+
+            entity.ToTable("gen_formapago");
+
+            entity.Property(e => e.CodPag)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasComment("Código")
+                .HasColumnName("cod_pag");
+            entity.Property(e => e.NomPag)
+                .HasMaxLength(40)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasComment("Nombre")
+                .HasColumnName("nom_pag");
+            entity.Property(e => e.TipPag)
+                .HasComment("Ind. Pago 0 No Aplica 1 ACH 2 Cheque 3 Otros")
+                .HasColumnName("tip_pag");
         });
 
         modelBuilder.Entity<GenGrupoetnico>(entity =>
@@ -923,7 +976,7 @@ public partial class BdlaboratorioContext : DbContext
                 .HasDefaultValueSql("((0))")
                 .HasComment("Indicador Actualización sistema externo")
                 .HasColumnName("ind_act_extr");
-            entity.Property(e => e.IndExciva)
+            entity.Property(e => e.ind_exciva)
                 .IsRequired()
                 .HasDefaultValueSql("('0')")
                 .HasComment("Indicador de Exención de IVA")
@@ -989,6 +1042,66 @@ public partial class BdlaboratorioContext : DbContext
                 .IsFixedLength()
                 .HasComment("Tipo")
                 .HasColumnName("tip_tip");
+        });
+
+        modelBuilder.Entity<GthArea>(entity =>
+        {
+            entity.HasKey(e => new { e.CodCia, e.CodArea });
+
+            entity.ToTable("GTH_Areas", tb =>
+                {
+                    tb.HasComment("Areas de una Organización");
+                    tb.HasTrigger("tr_gth_areas_ins");
+                    tb.HasTrigger("tr_rhh_gth_areas");
+                });
+
+            entity.Property(e => e.CodCia)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .HasDefaultValueSql("((0))")
+                .IsFixedLength()
+                .HasComment("Compañía")
+                .HasColumnName("cod_cia");
+            entity.Property(e => e.CodArea)
+                .HasMaxLength(12)
+                .IsUnicode(false)
+                .HasDefaultValueSql("((0))")
+                .HasComment("Área")
+                .HasColumnName("cod_area");
+            entity.Property(e => e.CodAreaExtr)
+                .HasMaxLength(20)
+                .HasComment("Código Area Sistema Externo")
+                .HasColumnName("cod_area_Extr");
+            entity.Property(e => e.CodCiaExtr)
+                .HasMaxLength(20)
+                .HasComment("Código Compañia Sistema Externo")
+                .HasColumnName("cod_cia_Extr");
+            entity.Property(e => e.CodDep)
+                .HasMaxLength(12)
+                .IsUnicode(false)
+                .HasComment("Código de quien depende")
+                .HasColumnName("cod_dep");
+            entity.Property(e => e.CodOrg)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasComment("Código en el Organigrama")
+                .HasColumnName("cod_org");
+            entity.Property(e => e.CodOrganigrama)
+                .HasComment("Código Organigrama Sistema Externo")
+                .HasColumnName("cod_organigrama");
+            entity.Property(e => e.DesArea)
+                .HasMaxLength(50)
+                .HasComment("Descripción")
+                .HasColumnName("des_area");
+            entity.Property(e => e.IndActExtr)
+                .HasComment("Indicador Actualización Sistema Externo")
+                .HasColumnName("ind_act_Extr");
+
+            entity.HasOne(d => d.CodCiaNavigation).WithMany(p => p.GthAreas)
+                .HasForeignKey(d => d.CodCia)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_GTH_Areas_gen_compania");
         });
 
         modelBuilder.Entity<GthEstCivil>(entity =>
@@ -1243,9 +1356,7 @@ public partial class BdlaboratorioContext : DbContext
                 .HasColumnType("money")
                 .HasColumnName("sal_bas");
 
-            entity.HasOne(d => d.CarSupNavigation).WithMany(p => p.InverseCarSupNavigation)
-                .HasForeignKey(d => d.CarSup)
-                .HasConstraintName("FK_rhh_cargos_rhh_cargos");
+            
 
             entity.HasOne(d => d.CodCiaNavigation).WithMany(p => p.RhhCargos)
                 .HasForeignKey(d => d.CodCia)
@@ -1254,6 +1365,47 @@ public partial class BdlaboratorioContext : DbContext
             entity.HasOne(d => d.NivAcaNavigation).WithMany(p => p.RhhCargos)
                 .HasForeignKey(d => d.NivAca)
                 .HasConstraintName("FK_rhh_cargos_rhh_tbclaest");
+        });
+
+        modelBuilder.Entity<RhhCentroTrab>(entity =>
+        {
+            entity.HasKey(e => e.CodCt);
+
+            entity.ToTable("rhh_CentroTrab");
+
+            entity.Property(e => e.CodCt)
+                .ValueGeneratedNever()
+                .HasComment("Código Centro de Trabajo")
+                .HasColumnName("cod_CT");
+            entity.Property(e => e.ClaseRiesgo)
+                .HasDefaultValueSql("((1))")
+                .HasComment("Clase De Riesgo");
+            entity.Property(e => e.CodCia)
+                .HasMaxLength(3)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('0')")
+                .IsFixedLength()
+                .HasComment("Código Compañía")
+                .HasColumnName("cod_cia");
+            entity.Property(e => e.CodCtPlanilla)
+                .HasMaxLength(9)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('0')")
+                .IsFixedLength()
+                .HasComment("Centro de Trabajo Planilla")
+                .HasColumnName("CodCT_Planilla");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasComment("Descripción ")
+                .HasColumnName("descripcion");
+            entity.Property(e => e.IndAltoriesgo)
+                .HasComment("Actividad Alto Riesgo")
+                .HasColumnName("Ind_Altoriesgo");
+            entity.Property(e => e.Porcentaje)
+                .HasComment("Porcentaje")
+                .HasColumnType("decimal(6, 3)");
+            entity.Property(e => e.TarEspecPens).HasComment("Indicador tarifa especial pensiones para alto riesgo 0.Tarifa normal,1. Actividades de alto riesgo.2. Senadores.3. CTI.4. Aviadores.");
         });
 
         modelBuilder.Entity<RhhEmplea>(entity =>
@@ -2277,10 +2429,7 @@ public partial class BdlaboratorioContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_rhh_emplea_Rhh_TbSubTipCotiza");
 
-            entity.HasOne(d => d.TipIdeNavigation).WithMany(p => p.RhhEmpleas)
-                .HasForeignKey(d => d.TipIde)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_rhh_emplea_gen_tipide");
+           
 
             entity.HasOne(d => d.TipPagNavigation).WithMany(p => p.RhhEmpleas)
                 .HasForeignKey(d => d.TipPag)
@@ -2337,6 +2486,68 @@ public partial class BdlaboratorioContext : DbContext
                 .HasColumnName("Des_RanVac");
         });
 
+        modelBuilder.Entity<RhhSucursalSs>(entity =>
+        {
+            entity.HasKey(e => e.SucSs);
+
+            entity.ToTable("rhh_sucursalSS");
+
+            entity.Property(e => e.SucSs)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasComment("Código")
+                .HasColumnName("suc_SS");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(40)
+                .IsUnicode(false)
+                .HasComment("Descripción")
+                .HasColumnName("descripcion");
+        });
+
+        modelBuilder.Entity<RhhTbCtaGa>(entity =>
+        {
+            entity.HasKey(e => e.PreCtaGas);
+
+            entity.ToTable("rhh_tbCtaGas");
+
+            entity.Property(e => e.PreCtaGas)
+                .HasMaxLength(16)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasComment("Prefijo Cuenta Gastos")
+                .HasColumnName("Pre_CtaGas");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasComment("Descripcion Prefijo")
+                .HasColumnName("descripcion");
+        });
+
+        modelBuilder.Entity<RhhTbModLiq>(entity =>
+        {
+            entity.HasKey(e => e.ModLiq);
+
+            entity.ToTable("rhh_tbModLiq", tb => tb.HasTrigger("Trg_rhh_tbModLiq"));
+
+            entity.Property(e => e.ModLiq)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasComment("Código")
+                .HasColumnName("mod_liq");
+            entity.Property(e => e.DesMod)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasComment("Descripción")
+                .HasColumnName("des_mod");
+            entity.Property(e => e.IndCtt)
+                .HasComment("Indicador Contratista")
+                .HasColumnName("ind_ctt");
+        });
+
         modelBuilder.Entity<RhhTbSubTipCotiza>(entity =>
         {
             entity.HasKey(e => e.SubTipCot);
@@ -2369,6 +2580,42 @@ public partial class BdlaboratorioContext : DbContext
                 .HasColumnName("Des_SubTip");
         });
 
+        modelBuilder.Entity<RhhTbTipCotiza>(entity =>
+        {
+            entity.HasKey(e => e.TipCot);
+
+            entity.ToTable("rhh_TbTipCotiza");
+
+            entity.Property(e => e.TipCot)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasComment("Tipo Cotizante")
+                .HasColumnName("tip_cot");
+            entity.Property(e => e.CodDian)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('')")
+                .IsFixedLength()
+                .HasComment("Codigo Dian")
+                .HasColumnName("cod_Dian");
+            entity.Property(e => e.CodPlanilla)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasComment("Código en Planilla")
+                .HasColumnName("cod_planilla");
+            entity.Property(e => e.DesCot)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasComment("Descripción")
+                .HasColumnName("des_cot");
+            entity.Property(e => e.IndCtt)
+                .HasComment("Indicador Contratista")
+                .HasColumnName("ind_ctt");
+        });
+
         modelBuilder.Entity<RhhTbTipPag>(entity =>
         {
             entity.HasKey(e => e.TipPag);
@@ -2399,6 +2646,19 @@ public partial class BdlaboratorioContext : DbContext
                 .HasDefaultValueSql("((1))")
                 .HasComment("Tipo de Cuenta: Ahorros, Corriente, Otros")
                 .HasColumnName("tip_cta");
+        });
+
+        modelBuilder.Entity<RhhTbTipTrabajo>(entity =>
+        {
+            entity.HasKey(e => e.TipTrabajo);
+
+            entity.ToTable("rhh_tbTipTrabajo", tb => tb.HasComment("Tipos de Trabajo"));
+
+            entity.Property(e => e.TipTrabajo).HasComment("Codigo Tipo Trabajo");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasComment("Descripcion Tipo Trabajo");
         });
 
         modelBuilder.Entity<RhhTbclaest>(entity =>
@@ -2443,6 +2703,24 @@ public partial class BdlaboratorioContext : DbContext
                 .HasMaxLength(20)
                 .HasComment("Codigo Homologación para integraciones")
                 .HasColumnName("tip_est_Extr");
+        });
+
+        modelBuilder.Entity<RhhTbclasal>(entity =>
+        {
+            entity.HasKey(e => e.ClaSal);
+
+            entity.ToTable("rhh_tbclasal");
+
+            entity.Property(e => e.ClaSal)
+                .ValueGeneratedNever()
+                .HasComment("Clase salario")
+                .HasColumnName("cla_sal");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasComment("descripcion")
+                .HasColumnName("descripcion");
         });
 
         modelBuilder.Entity<RhhTbemppen>(entity =>
@@ -2714,6 +2992,401 @@ public partial class BdlaboratorioContext : DbContext
                 .HasComment("Descripción");
         });
 
+        modelBuilder.Entity<RhhTipcon>(entity =>
+        {
+            entity.HasKey(e => e.TipCon)
+                .HasName("PK_rhh_tipvin")
+                .IsClustered(false);
+
+            entity.ToTable("rhh_tipcon", tb =>
+                {
+                    tb.HasTrigger("Tr_rhh_tipcon");
+                    tb.HasTrigger("Tr_rhh_tipcon_Valid_IndApo");
+                });
+
+            entity.Property(e => e.TipCon)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasComment("Tipo Contrato")
+                .HasColumnName("tip_con");
+            entity.Property(e => e.AplSs)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Habilitar Seguridad Social")
+                .HasColumnName("apl_ss");
+            entity.Property(e => e.ApoFspP)
+                .HasComment("Patrón asume FSP")
+                .HasColumnName("apo_fspP");
+            entity.Property(e => e.ApoPen)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Aportar Pensión")
+                .HasColumnName("apo_pen");
+            entity.Property(e => e.ApoPenp100)
+                .HasComment("Aportar Pension al 100% patrón")
+                .HasColumnName("apo_penp100");
+            entity.Property(e => e.ApoRie)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Aportar Riesgos")
+                .HasColumnName("apo_rie");
+            entity.Property(e => e.ApoSal)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Aportar Salud")
+                .HasColumnName("apo_sal");
+            entity.Property(e => e.ApoSalp100)
+                .HasComment("Aportar Slaud 100% patrón")
+                .HasColumnName("apo_salp100");
+            entity.Property(e => e.ApoSsemp100)
+                .HasComment("Aportar SS al 100% Empleado")
+                .HasColumnName("apo_SSEmp100");
+            entity.Property(e => e.AuxCom)
+                .HasComment("Completar días no cubiertos por la administradora")
+                .HasColumnName("Aux_com");
+            entity.Property(e => e.AuxInc)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Pagar los días no cubiertos por la adminstradora")
+                .HasColumnName("Aux_inc");
+            entity.Property(e => e.AuxPor)
+                .HasDefaultValueSql("((100))")
+                .HasComment("Porcentaje a cubrir en el auxilio")
+                .HasColumnType("numeric(7, 4)")
+                .HasColumnName("Aux_por");
+            entity.Property(e => e.AuxPorDiasAdmon)
+                .HasComment("Porcentaje para Cubrir el Auxilio de los dias cubiertos ")
+                .HasColumnType("numeric(7, 2)")
+                .HasColumnName("AuxPor_DiasAdmon");
+            entity.Property(e => e.AuxTra)
+                .HasDefaultValueSql("((2))")
+                .HasComment("Auxilio de Tansporte")
+                .HasColumnName("aux_tra");
+            entity.Property(e => e.CodAutol)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('01')")
+                .IsFixedLength()
+                .HasComment("Código de Autoliquidación")
+                .HasColumnName("cod_autol");
+            entity.Property(e => e.CodNomElec)
+                .HasDefaultValueSql("('0')")
+                .HasComment("Código Homologación Nómina electrónica ")
+                .HasColumnName("Cod_NomElec");
+            entity.Property(e => e.ConHon)
+                .HasMaxLength(6)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('0')")
+                .IsFixedLength()
+                .HasComment("Concepto para Honorarios")
+                .HasColumnName("con_hon");
+            entity.Property(e => e.DiaCes)
+                .HasComment("Mínimo número de días para reconocer la Prima")
+                .HasColumnName("dia_ces");
+            entity.Property(e => e.DiaPri)
+                .HasComment("Mínimo número de días para reconocer la Prima")
+                .HasColumnName("dia_pri");
+            entity.Property(e => e.Diasprima).HasComment("Número de días del semestre para prima");
+            entity.Property(e => e.DurCon)
+                .HasComment("Duración")
+                .HasColumnName("dur_con");
+            entity.Property(e => e.IbcMin)
+                .HasDefaultValueSql("((1))")
+                .HasComment("En caso de IBC inferior al mínimo")
+                .HasColumnName("IBC_min");
+            entity.Property(e => e.IbcPor)
+                .HasDefaultValueSql("((0))")
+                .HasComment("Porcentaje de aporte del patrón del IBC si en inf al mínimo")
+                .HasColumnType("numeric(7, 2)")
+                .HasColumnName("IBC_por");
+            entity.Property(e => e.IbcProySs)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("IBC Del Mes para cálculo de proyección de Seguridad Social")
+                .HasColumnName("IBC_ProySS");
+            entity.Property(e => e.IbcVac)
+                .HasDefaultValueSql("((1))")
+                .HasComment("IBC usado para los días de vacaciones")
+                .HasColumnName("IBC_vac");
+            entity.Property(e => e.IndAp8sal)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Aportar salud en caso de LNR")
+                .HasColumnName("ind_ap8sal");
+            entity.Property(e => e.IndAppen)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Aportar Pensión en caso de LNR")
+                .HasColumnName("ind_appen");
+            entity.Property(e => e.IndAppenEmp)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("El empleado aporta pensión en LNR")
+                .HasColumnName("ind_appen_emp");
+            entity.Property(e => e.IndApsalEmp)
+                .HasComment("Calcula Salud Empleado en Licencia No Remunerada?")
+                .HasColumnName("ind_apsal_emp");
+            entity.Property(e => e.IndAusentVac)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Afecta Ausentismos con Interrupción de contrato?")
+                .HasColumnName("Ind_AusentVac");
+            entity.Property(e => e.IndAuxAdmon)
+                .HasComment("Indicador para aplicar Auxilio a incapacidades mayores a 4 dias")
+                .HasColumnName("Ind_AuxAdmon");
+            entity.Property(e => e.IndAuxTra)
+                .HasComment("Validar Pago Transporte (Ultimo Periodo) con lo Devengado ")
+                .HasColumnName("ind_AuxTra");
+            entity.Property(e => e.IndCesPromSalMen)
+                .HasComment("Prima Promerio Sueldo Mensual ")
+                .HasColumnName("Ind_CesPromSalMen");
+            entity.Property(e => e.IndCtt)
+                .HasComment("Indicador Contratista")
+                .HasColumnName("ind_ctt");
+            entity.Property(e => e.IndIbcdiasAdmon)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Calcular Auxilio Incapacidad con el IBC del mes anterior")
+                .HasColumnName("Ind_IBCDiasAdmon");
+            entity.Property(e => e.IndIbcdiasArl)
+                .HasComment("Calcular Auxilio Incapacidad ARL con el IBC del mes anterior")
+                .HasColumnName("Ind_IBCDiasARL");
+            entity.Property(e => e.IndIbcdiasLma)
+                .HasComment("Calcular Licencia Maternidad/Paternidad IBC del mes anterior o con el Salario Basico")
+                .HasColumnName("Ind_IBCDiasLMA");
+            entity.Property(e => e.IndIbcinc)
+                .HasComment("IBC para el pago de Incapacidades")
+                .HasColumnName("ind_IBCInc");
+            entity.Property(e => e.IndInc31)
+                .HasComment("Día 31 en incapacidades")
+                .HasColumnName("ind_Inc31");
+            entity.Property(e => e.IndIncSbas)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Calcular Incapacidad con el sueldo básico del mes anterior")
+                .HasColumnName("ind_IncSBas");
+            entity.Property(e => e.IndIndemLnr)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Dias LNR Afecta Calculo Dias Indemnizacion")
+                .HasColumnName("IndIndemLNR");
+            entity.Property(e => e.IndIndemSalVar)
+                .HasDefaultValueSql("((1))")
+                .HasComment("Indicador Indemnizacion Salario Variable")
+                .HasColumnName("Ind_IndemSalVar");
+            entity.Property(e => e.IndIndemSalVarLc)
+                .HasDefaultValueSql("((1))")
+                .HasComment("Indicador Indemnizacion Liquidacion de Contrato Salario Variable")
+                .HasColumnName("Ind_IndemSalVarLC");
+            entity.Property(e => e.IndIndemTf)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Indicador Indemnizacion Termino Fijo No pagar menos de 15 dias")
+                .HasColumnName("ind_indemTF");
+            entity.Property(e => e.IndIntCesLnr)
+                .HasComment("Indicador LNR Int.Cesantias")
+                .HasColumnName("Ind_IntCesLNR");
+            entity.Property(e => e.IndIrpAsumido)
+                .HasComment("Indicador Riesgos Profesionales Asumir 1 Día")
+                .HasColumnName("Ind_IrpAsumido");
+            entity.Property(e => e.IndIrpAuxilio)
+                .HasComment("Indicador Pagar Auxilio")
+                .HasColumnName("Ind_IrpAuxilio");
+            entity.Property(e => e.IndLnr31)
+                .HasComment("Pagar día 31 en LNR")
+                .HasColumnName("ind_Lnr31");
+            entity.Property(e => e.IndPara)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Calcular parafiscales")
+                .HasColumnName("ind_para");
+            entity.Property(e => e.IndPrmLnr)
+                .HasComment("Indicador Restar LNR Y SANCIONES")
+                .HasColumnName("Ind_PrmLNR");
+            entity.Property(e => e.IndPrmPromSalMen)
+                .HasComment("Prima Promerio Sueldo Mensual ")
+                .HasColumnName("Ind_PrmPromSalMen");
+            entity.Property(e => e.IndRetNoAplBenAlim)
+                .HasComment("Indicador No Aplica Beneficio Bonos Alimentación al calcular tope para AFP y APV")
+                .HasColumnName("Ind_RetNoAplBenAlim");
+            entity.Property(e => e.IndSueldoSvar)
+                .HasDefaultValueSql("((1))")
+                .HasComment("Indicador para Base Salario Empleados Variables")
+                .HasColumnName("ind_SueldoSvar");
+            entity.Property(e => e.IndVac31)
+                .HasComment("No Contar Dia31 en Vacaciones, Cuando No se paga")
+                .HasColumnName("Ind_Vac31");
+            entity.Property(e => e.IndVacSalVar)
+                .HasDefaultValueSql("((1))")
+                .HasComment("Indicador Vacaciones Salario Variable")
+                .HasColumnName("Ind_VacSalVar");
+            entity.Property(e => e.IndVacSalVarLc)
+                .HasComment("Indicador Vacaciones Liquidacion de Contrato Salario Variable")
+                .HasColumnName("Ind_VacSalVarLC");
+            entity.Property(e => e.IndVarbas)
+                .HasComment("")
+                .HasColumnName("ind_varbas");
+            entity.Property(e => e.LiqCes)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Calcular Cesantías")
+                .HasColumnName("liq_ces");
+            entity.Property(e => e.LiqDeccuaEc)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Ecuador-Aplica Decimo Cuarta.")
+                .HasColumnName("liq_deccua_ec");
+            entity.Property(e => e.LiqDecterEc)
+                .HasComment("Ecuador-Aplica Decimo Tercera.")
+                .HasColumnName("liq_decter_ec");
+            entity.Property(e => e.LiqFdoresEc)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Ecuador-Aplica fdo Reserva.")
+                .HasColumnName("liq_fdores_ec");
+            entity.Property(e => e.LiqPri)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Calcular Prima")
+                .HasColumnName("liq_pri");
+            entity.Property(e => e.LiqUtilEc)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Ecuador-Aplica Utilidades.")
+                .HasColumnName("liq_util_ec");
+            entity.Property(e => e.LiqVac)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasComment("Calcular Vacaciones")
+                .HasColumnName("liq_vac");
+            entity.Property(e => e.MesProm)
+                .HasDefaultValueSql("((12))")
+                .HasComment("Meses Para Promedio IBC")
+                .HasColumnName("mes_prom");
+            entity.Property(e => e.MetAca)
+                .HasComment("Tipo Académico")
+                .HasColumnName("met_aca");
+            entity.Property(e => e.MetLiq)
+                .HasDefaultValueSql("((1))")
+                .HasComment("Método Liquidación")
+                .HasColumnName("met_liq");
+            entity.Property(e => e.ModLiq)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('0')")
+                .IsFixedLength()
+                .HasComment("Modo de liquidación")
+                .HasColumnName("mod_liq");
+            entity.Property(e => e.NomCon)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasComment("Nombre")
+                .HasColumnName("nom_con");
+            entity.Property(e => e.NroDiasPrueba)
+                .HasComment("Nro de días para periodo de prueba")
+                .HasColumnName("Nro_dias_prueba");
+            entity.Property(e => e.PagCes)
+                .HasDefaultValueSql("((1))")
+                .HasComment("Calcular Cesantías")
+                .HasColumnName("pag_ces");
+            entity.Property(e => e.PagIndemn)
+                .HasDefaultValueSql("((3))")
+                .HasComment("Calculo Base Salario Indemnizacion")
+                .HasColumnName("Pag_Indemn");
+            entity.Property(e => e.PagPri)
+                .HasDefaultValueSql("((1))")
+                .HasComment("Calcular Prima")
+                .HasColumnName("pag_pri");
+            entity.Property(e => e.Pcesantia)
+                .HasComment("No pagar con proporcionalidad a los dias definidos")
+                .HasColumnName("PCesantia");
+            entity.Property(e => e.PerVac)
+                .HasDefaultValueSql("((4))")
+                .HasComment("Número max de períodos a reconocer")
+                .HasColumnName("Per_vac");
+            entity.Property(e => e.Pprima).HasComment("No pagar con poroporcionalidad a 360");
+            entity.Property(e => e.ProBas)
+                .HasDefaultValueSql("((2))")
+                .HasComment("Forma de promedio para las Bases")
+                .HasColumnName("pro_bas");
+            entity.Property(e => e.ProCes)
+                .HasDefaultValueSql("((360))")
+                .HasComment("Días para realizar promedio")
+                .HasColumnName("pro_ces");
+            entity.Property(e => e.ProIndemEnero).HasComment("Base Indemnizacion Solo Año Actual-Desde Enero");
+            entity.Property(e => e.ProIntCes)
+                .HasComment("Proporcionalidad Para Intereses de Cesantias")
+                .HasColumnName("pro_intCes");
+            entity.Property(e => e.ProPri)
+                .HasDefaultValueSql("((360))")
+                .HasComment("Días para Provisión Prima")
+                .HasColumnName("Pro_pri");
+            entity.Property(e => e.ProVac)
+                .HasDefaultValueSql("((360))")
+                .HasComment("Días para provisión Vacaciones")
+                .HasColumnName("pro_vac");
+            entity.Property(e => e.ProvAnualEc)
+                .HasDefaultValueSql("((1))")
+                .HasComment("Ecuador-numero de  meses a Provisionar.")
+                .HasColumnName("Prov_anual_ec");
+            entity.Property(e => e.ProvCesan)
+                .HasComment("Porcentaje a provisionar por cesantías")
+                .HasColumnType("numeric(6, 2)")
+                .HasColumnName("prov_cesan");
+            entity.Property(e => e.ProvIntces)
+                .HasComment("Porcentaje a provisionar por intereses de cesantía")
+                .HasColumnType("numeric(6, 2)")
+                .HasColumnName("prov_intces");
+            entity.Property(e => e.ProvPagCes)
+                .HasComment("Calcular Provision Cesantias Segun Indicador Pag_ces")
+                .HasColumnName("Prov_PagCes");
+            entity.Property(e => e.ProvPagPri)
+                .HasComment("Calcular Provision Prima Segun Indicador Pag_pri")
+                .HasColumnName("Prov_PagPri");
+            entity.Property(e => e.ProvPrima)
+                .HasComment("Porcentaje a provisionar por Prima")
+                .HasColumnType("numeric(6, 2)")
+                .HasColumnName("prov_prima");
+            entity.Property(e => e.ProvSueldoSvar)
+                .HasComment("Calcular Provision Vacaciones Segun Indicador ind_SueldoSvar")
+                .HasColumnName("Prov_SueldoSvar");
+            entity.Property(e => e.ProvVacac)
+                .HasComment("Porcentaje a provisionar por Vacaciones")
+                .HasColumnType("numeric(6, 2)")
+                .HasColumnName("prov_vacac");
+            entity.Property(e => e.ProyPriServ).HasComment("Proyectar Base Salario-Transporte para Prima Hasta FecCorte Liq.Prestacion");
+            entity.Property(e => e.PrvMes)
+                .HasDefaultValueSql("((12))")
+                .HasColumnName("prv_mes");
+            entity.Property(e => e.TipDur)
+                .HasDefaultValueSql("((1))")
+                .HasComment("Tipo Duración")
+                .HasColumnName("tip_dur");
+            entity.Property(e => e.TrnCes)
+                .HasDefaultValueSql("((1))")
+                .HasComment("Auxilio de Transporte para las Cesantías")
+                .HasColumnName("trn_ces");
+            entity.Property(e => e.TrnPri)
+                .HasDefaultValueSql("((1))")
+                .HasComment("Auxilio de Transporte para la Prima")
+                .HasColumnName("trn_pri");
+            entity.Property(e => e.TrnVac)
+                .HasDefaultValueSql("((1))")
+                .HasComment("Auxilio de transporte en vacaciones")
+                .HasColumnName("trn_vac");
+            entity.Property(e => e.VacUlremEc)
+                .HasDefaultValueSql("((0))")
+                .HasComment("Ecuador-Pagar Vacac. con Ult Remuner.")
+                .HasColumnName("vac_ulrem_ec");
+
+            entity.HasOne(d => d.ModLiqNavigation).WithMany(p => p.RhhTipcons)
+                .HasForeignKey(d => d.ModLiq)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_rhh_tipcon_rhh_tbModLiq");
+        });
+
         modelBuilder.Entity<RhhTipoliq>(entity =>
         {
             entity.HasKey(e => e.CodTlq).HasName("cod_tlq");
@@ -2801,6 +3474,272 @@ public partial class BdlaboratorioContext : DbContext
             entity.Property(e => e.VerAplEnc)
                 .HasMaxLength(128)
                 .HasColumnName("ver_apl_enc");
+        });
+
+        modelBuilder.Entity<WebGridmaestro>(entity =>
+        {
+            entity.HasKey(e => new { e.CodMae, e.NumPag, e.NumGrd, e.NomCmp });
+
+            entity.ToTable("web_gridmaestros");
+
+            entity.Property(e => e.CodMae)
+                .HasComment("Código del maestro")
+                .HasColumnName("cod_mae");
+            entity.Property(e => e.NumPag)
+                .HasComment("Número de la página")
+                .HasColumnName("num_pag");
+            entity.Property(e => e.NumGrd)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasComment("Numero del grid asociado en web_maestros")
+                .HasColumnName("num_grd");
+            entity.Property(e => e.NomCmp)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasComment("Nombre del campo")
+                .HasColumnName("nom_cmp");
+            entity.Property(e => e.FilHlp).HasColumnName("fil_hlp");
+            entity.Property(e => e.ForCmp)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasComment("formato del campo")
+                .HasColumnName("for_cmp");
+            entity.Property(e => e.IndAud).HasColumnName("ind_aud");
+            entity.Property(e => e.IndLec).HasColumnName("ind_lec");
+            entity.Property(e => e.JoinHlp).HasColumnName("join_hlp");
+            entity.Property(e => e.KeyHlp)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("key_hlp");
+            entity.Property(e => e.NivSeg)
+                .HasDefaultValueSql("((99))")
+                .HasColumnName("niv_seg");
+            entity.Property(e => e.NomHlp)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("nom_hlp");
+            entity.Property(e => e.OrdCmp).HasColumnName("ord_cmp");
+            entity.Property(e => e.ReqCmp)
+                .HasComment("Indicador de requerido")
+                .HasColumnName("req_cmp");
+            entity.Property(e => e.TabHlp)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("tab_hlp");
+            entity.Property(e => e.TitCmp)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasComment("Titulo del campo")
+                .HasColumnName("tit_cmp");
+            entity.Property(e => e.ValidCmp)
+                .HasComment("codigo de validacion del campo (en javascript)")
+                .HasColumnName("valid_cmp");
+            entity.Property(e => e.WhenCmp).HasColumnName("when_cmp");
+
+           
+        });
+
+        modelBuilder.Entity<WebLabelmaestro>(entity =>
+        {
+            entity.HasKey(e => new { e.CodMae, e.NumPag, e.NomCmp });
+
+            entity.ToTable("web_labelmaestros");
+
+            entity.Property(e => e.CodMae).HasColumnName("cod_mae");
+            entity.Property(e => e.NumPag).HasColumnName("num_pag");
+            entity.Property(e => e.NomCmp)
+                .HasMaxLength(30)
+                .IsFixedLength()
+                .HasColumnName("nom_cmp");
+            entity.Property(e => e.AltCmp).HasColumnName("alt_cmp");
+            entity.Property(e => e.AncCmp).HasColumnName("anc_cmp");
+            entity.Property(e => e.BoldLbl).HasColumnName("bold_lbl");
+            entity.Property(e => e.ColorLbl)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("color_lbl");
+            entity.Property(e => e.EncCmp).HasColumnName("enc_cmp");
+            entity.Property(e => e.FntLbl)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("fnt_lbl");
+            entity.Property(e => e.ItalicLbl).HasColumnName("italic_lbl");
+            entity.Property(e => e.PosxLbl).HasColumnName("posx_lbl");
+            entity.Property(e => e.PosyLbl).HasColumnName("posy_lbl");
+            entity.Property(e => e.SizeLbl).HasColumnName("size_lbl");
+            entity.Property(e => e.TxtLbl)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("txt_lbl");
+
+            entity.HasOne(d => d.WebPaginasmae).WithMany(p => p.WebLabelmaestros)
+                .HasForeignKey(d => new { d.CodMae, d.NumPag })
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_web_labelmaestros_web_paginasmae");
+        });
+
+        modelBuilder.Entity<WebMaestro>(entity =>
+        {
+            entity.HasKey(e => new { e.CodMae, e.NomCmp, e.NumPag });
+
+            entity.ToTable("web_maestros");
+
+            entity.Property(e => e.CodMae)
+                .HasComment("Código del maestro")
+                .HasColumnName("cod_mae");
+            entity.Property(e => e.NomCmp)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasComment("Nombre del campo")
+                .HasColumnName("nom_cmp");
+            entity.Property(e => e.NumPag)
+                .HasComment("Número de la página")
+                .HasColumnName("num_pag");
+            entity.Property(e => e.AltCmp)
+                .HasComment("Alto del campo")
+                .HasColumnName("alt_cmp");
+            entity.Property(e => e.AncCmp)
+                .HasComment("Ancho del campo")
+                .HasColumnName("anc_cmp");
+            entity.Property(e => e.EncCmp).HasColumnName("enc_cmp");
+            entity.Property(e => e.ForCmp)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasComment("Formato del campo")
+                .HasColumnName("for_cmp");
+            entity.Property(e => e.IndAud)
+                .HasComment("Indicador de Auditoria")
+                .HasColumnName("ind_aud");
+            entity.Property(e => e.IndBus)
+                .HasComment("Indicador de busqueda")
+                .HasColumnName("ind_bus");
+            entity.Property(e => e.IndLec)
+                .HasComment("indicador de lectura")
+                .HasColumnName("ind_lec");
+            entity.Property(e => e.IndVal)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasColumnName("ind_val");
+            entity.Property(e => e.KeyHlp)
+                .HasComment("Llave de la tabla de ayuda")
+                .HasColumnName("key_hlp");
+            entity.Property(e => e.NivSeg)
+                .HasDefaultValueSql("((99))")
+                .HasColumnName("niv_seg");
+            entity.Property(e => e.NomHlp)
+                .HasComment("Nombre de la ayuda")
+                .HasColumnName("nom_hlp");
+            entity.Property(e => e.OpcCmp)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasComment("Opciones del campo")
+                .HasColumnName("opc_cmp");
+            entity.Property(e => e.OrdTab)
+                .HasComment("orden de tabulacion del campo")
+                .HasColumnName("ord_tab");
+            entity.Property(e => e.PosxCmp)
+                .HasComment("Posicion X del campo")
+                .HasColumnName("posx_cmp");
+            entity.Property(e => e.PosyCmp)
+                .HasComment("Posicion Y del campo")
+                .HasColumnName("posy_cmp");
+            entity.Property(e => e.ReqCmp)
+                .HasComment("Indicador de requerido")
+                .HasColumnName("req_cmp");
+            entity.Property(e => e.TabHlp)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasComment("Tabla de ayuda")
+                .HasColumnName("tab_hlp");
+            entity.Property(e => e.TipCmp)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasComment("Tipo de objeto")
+                .HasColumnName("tip_cmp");
+            entity.Property(e => e.ValOpc)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasComment("valores de la opcion(values)")
+                .HasColumnName("val_opc");
+            entity.Property(e => e.ValidCmp)
+                .IsUnicode(false)
+                .HasColumnName("valid_cmp");
+            entity.Property(e => e.WhenCmp)
+                .IsUnicode(false)
+                .HasColumnName("when_cmp");
+
+            entity.HasOne(d => d.CodMaeNavigation).WithMany(p => p.WebMaestros)
+                .HasForeignKey(d => d.CodMae)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_web_maestros_web_maestrosgen");
+
+            
+        });
+
+        modelBuilder.Entity<WebMaestrosgen>(entity =>
+        {
+            entity.HasKey(e => e.CodMae);
+
+            entity.ToTable("web_maestrosgen", tb => tb.HasTrigger("tr_web_maestrosgen"));
+
+            entity.Property(e => e.CodMae)
+                .ValueGeneratedNever()
+                .HasColumnName("cod_mae");
+            entity.Property(e => e.EmpSector)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('P')")
+                .IsFixedLength()
+                .HasColumnName("emp_sector");
+            entity.Property(e => e.FilDef).HasColumnName("fil_def");
+            entity.Property(e => e.IndOrdLlaves)
+                .HasComment("Ind Ordenamiento de Llaves alfabeticamente.")
+                .HasColumnName("ind_ord_llaves");
+            entity.Property(e => e.IndSta).HasColumnName("ind_sta");
+            entity.Property(e => e.NomMae)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("nom_mae");
+            entity.Property(e => e.NomTab)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("nom_tab");
+            entity.Property(e => e.TipArc)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("tip_arc");
+        });
+
+        modelBuilder.Entity<WebPaginasmae>(entity =>
+        {
+            entity.HasKey(e => new { e.CodMae, e.NumPag }).HasName("PK_web_paginasmae_1");
+
+            entity.ToTable("web_paginasmae");
+
+            entity.Property(e => e.CodMae).HasColumnName("cod_mae");
+            entity.Property(e => e.NumPag).HasColumnName("Num_Pag");
+            entity.Property(e => e.AncPag).HasColumnName("Anc_Pag");
+            entity.Property(e => e.IndSta).HasColumnName("ind_sta");
+            entity.Property(e => e.NomPag)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("Nom_Pag");
+            entity.Property(e => e.OrdPag).HasColumnName("ord_pag");
+            entity.Property(e => e.SecPag)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('M')")
+                .IsFixedLength()
+                .HasColumnName("sec_pag");
+
+            entity.HasOne(d => d.CodMaeNavigation).WithMany(p => p.WebPaginasmaes)
+                .HasForeignKey(d => d.CodMae)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_web_paginasmae_web_maestrosgen");
         });
         modelBuilder.HasSequence<int>("Consecutivo_SCC");
         modelBuilder.HasSequence("SCC_Felicitacion");

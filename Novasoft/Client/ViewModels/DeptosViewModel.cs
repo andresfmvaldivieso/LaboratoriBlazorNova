@@ -7,11 +7,11 @@ using Novasoft.Server.Data;
 namespace Novasoft.Client.ViewModels
 {
     [Authorize]
-    public class DeptosViewModel:ViewModelBase<GenDepto>
+    public class DeptosViewModel:ViewModelBase<gen_deptos>
     {
         [Inject]
         private IGenDeptosServices GenDeptosServices { get; set; }
-        public IEnumerable<GenDepto> Deptos;
+        public IEnumerable<gen_deptos> Deptos;
 
         [Parameter]
         public string CodigoPais { get; set; }

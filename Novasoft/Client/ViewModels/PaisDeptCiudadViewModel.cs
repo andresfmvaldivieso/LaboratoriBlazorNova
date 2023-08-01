@@ -23,6 +23,9 @@ namespace Novasoft.Client.ViewModels
         [Parameter]
         public EventCallback<(string,string,string)> LocalizacionChange { get; set; }
 
+        [Parameter]
+        public int idpadre { get; set; }
+
         public IEnumerable<GenPaise>? paises;
         public string paisSelected { get; set; }
 
@@ -61,20 +64,20 @@ namespace Novasoft.Client.ViewModels
         }
 
 
-        public IEnumerable<GenDepto>? deptos;
+        public IEnumerable<gen_deptos>? deptos;
         public string deptoSelected { get; set; }
 
         public int countDeptos;
 
         public async Task LoadDataDeptos(LoadDataArgs args)
         {
-            IEnumerable<GenDepto>? query = new List<GenDepto>();
+            IEnumerable<gen_deptos>? query = new List<gen_deptos>();
             try
             {
                 if (!String.IsNullOrEmpty(paisSelected))
                     query = await genDeptosServices.GetDeptos();
 
-                query=query?.Where(x => x.CodPai == paisSelected);
+                query=query?.Where(x => x.cod_pai == paisSelected);
             }
             catch (AccessTokenNotAvailableException exception)
             {
@@ -82,7 +85,7 @@ namespace Novasoft.Client.ViewModels
             }
             if (!string.IsNullOrEmpty(args.Filter))
             {
-                query = query.Where(c => c.CodDep.ToLower().Contains(args.Filter.ToLower()) || c.NomDep.ToLower().Contains(args.Filter.ToLower()));
+                query = query.Where(c => c.cod_dep.ToLower().Contains(args.Filter.ToLower()) || c.nom_dep.ToLower().Contains(args.Filter.ToLower()));
             }
 
             countDeptos = query.Count();

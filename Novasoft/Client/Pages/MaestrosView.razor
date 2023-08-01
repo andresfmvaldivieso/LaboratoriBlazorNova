@@ -1,0 +1,166 @@
+﻿@page "/maestros/{codMae}"
+@inherits MaestroViewModel
+
+
+<h3>@webMaestrosgen.NomMae</h3>
+
+
+<RadzenTabs>
+    <Tabs>
+        @if (tabsMaestro?.Count() > 0)
+        {
+            @foreach (var tab in tabsMaestro)
+            {
+                <RadzenTabsItem Text="@tab.NomPag">
+                    @if (tab.WebMaestros?.Count() > 0)
+                    {
+                        @foreach (var webMaestro in tab.WebMaestros.OrderBy(x => x.PosyCmp).ThenBy(x => x.PosxCmp))
+                        {
+                            @switch (webMaestro.TipCmp.Trim())
+                            {
+                                //TextBox
+                                case "B":
+                                    @if (gridPag.ContainsKey(tab) && gridPag[tab].Any(x => x.KeyHlp == webMaestro.NomCmp.Trim()))
+                                    {
+                                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">@webMaestro.NomCmp</RadzenText>
+                                        <RadzenTextBox class="w-100" @bind-Value="@filtroGrid" Change="@(()=>triggerGrid(webMaestro))" />
+                                    }
+                                    else
+                                    {
+                                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">@webMaestro.NomCmp</RadzenText>
+                                        <RadzenTextBox class="w-100" />
+                                    }
+                                    break;
+                                //RabioButton Horizontal
+                                case "R":
+
+                                    string input = @webMaestro.OpcCmp;
+                                    string pattern = @"([^,]+),(.*)";
+                                    string result1 = string.Empty;
+                                    string result2 = string.Empty;
+                                    var regex = new System.Text.RegularExpressions.Regex(pattern);
+                                    var match = regex.Match(input);
+
+                                    if (match.Success)
+                                    {
+                                        result1 = match.Groups[1].Value;
+                                        result2 = match.Groups[2].Value;
+                                    }
+
+                                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">@webMaestro.NomCmp</RadzenText>
+                                    <RadzenRadioButtonList Value=@value1 class="mb-5">
+                                        <Items>
+                                            <RadzenRadioButtonListItem Text="@result1" Value="1" />
+                                            <RadzenRadioButtonListItem Text="@result2" Value="2" />
+                                        </Items>
+                                    </RadzenRadioButtonList>
+                                    break;
+                                //Control Barrio
+                                case "BR":
+                                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">@webMaestro.NomCmp</RadzenText>
+                                    <PaisDeptCiudadView LocalizacionChange="@PaisDepartamentoCiudad"></PaisDeptCiudadView>
+                                    break;
+                                //CheckBox
+                                case "C":
+                                    <RadzenCheckBox @bind-Value=@value Name="CheckBox1" />
+                                    <RadzenLabel Text="@webMaestro.NomCmp" Component="CheckBox1" Style="margin-left: 8px; vertical-align: middle;" />
+                                    break;
+
+
+                            }
+                        }
+                    }
+                    @if (query?.Count() > 0)
+                    {
+                        <div class="tab-container" style="margin:1%;">
+                        <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                                        Data="query" TItem="gen_deptos" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
+                            <Columns>
+                                @foreach (var col in columns)
+                                {
+                                    <RadzenDataGridColumn TItem="gen_deptos" Property="@col.Item1" Title="@col.Item2" Frozen="true" Width="80px" TextAlign="TextAlign.Center" />
+                                }
+                            </Columns>
+                        </RadzenDataGrid>
+                        </div>
+                        @aa
+                    }
+                </RadzenTabsItem>
+            }
+        }
+    </Tabs>
+</RadzenTabs>
+
+@*<div class="tab-container">
+    @foreach (var tab in tabs)
+    {
+        <div class="tab @(tab == selectedTab ? "active-tab" : "")" @onclick="() => HandleTabSelected(tab)">@tab.Text</div>
+    }
+</div>
+<div class="tab-content">
+@if (selectedTab != null)
+{
+    <div class="card @(isCollapsed ? "collapsed" : "")">
+        <div class="card-header" @onclick="ToggleCollapse">
+            <h5 class="card-title">@selectedTab.Text</h5>
+        </div>
+        <div class="card-body">
+            @selectedTab.Content
+        </div>
+    </div>
+}
+</div>*@
+<style>
+    .tab-container {
+        display: flex;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
+
+    .tab {
+        padding: 10px 15px;
+        background-color: #f1f1f1;
+        border: 1px solid #ccc;
+        border-bottom: none;
+        cursor: pointer;
+    }
+
+        .tab.active-tab {
+            background-color: #fff;
+            border-bottom: 1px solid #fff;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+    .tab-content {
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-top: none;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    .form-label {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 0.5rem;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-bottom: 1rem;
+    }
+
+    .card-header {
+        cursor: pointer;
+    }
+
+    .card.collapsed .card-body {
+        display: none;
+    }
+</style>
+

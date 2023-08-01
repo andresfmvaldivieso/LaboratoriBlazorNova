@@ -26,7 +26,7 @@ namespace Novasoft.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<GenDepto>> Post(GenPaise genPaise)
+        public async Task<ActionResult<gen_deptos>> Post(GenPaise genPaise)
         {
             if (genPaise == null)
             {

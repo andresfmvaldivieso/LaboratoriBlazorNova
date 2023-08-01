@@ -11,29 +11,27 @@ namespace Novasoft.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GenDeptoesController : ControllerBase
+    public class GenDeptoesController : GeneralController<gen_deptos>
     {
-        private readonly BdlaboratorioContext _context;
-
-        public GenDeptoesController(BdlaboratorioContext context)
+        public GenDeptoesController(BdlaboratorioContext context) : base(context)
         {
-            _context = context;
         }
 
-        // GET: api/GenDeptoes
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<GenDepto>>> GetGenDeptos()
-        {
-          if (_context.GenDeptos == null)
-          {
-              return NotFound();
-          }
-            return await _context.GenDeptos.ToListAsync();
-        }
+
+        //// GET: api/GenDeptoes
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<gen_deptos>>> GetGenDeptos()
+        //{
+        //  if (_context.GenDeptos == null)
+        //  {
+        //      return NotFound();
+        //  }
+        //    return await _context.GenDeptos.ToListAsync();
+        //}
 
         // GET: api/GenDeptoes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<GenDepto>> GetGenDepto(string id)
+        public async Task<ActionResult<gen_deptos>> GetGenDepto(string id)
         {
           if (_context.GenDeptos == null)
           {
@@ -50,13 +48,13 @@ namespace Novasoft.Server.Controllers
         }
 
         [HttpGet("{CodPais}")]
-        public async Task<ActionResult<IEnumerable<GenDepto>>> GetGenDeptoPaises(string codPais)
+        public async Task<ActionResult<IEnumerable<gen_deptos>>> GetGenDeptoPaises(string codPais)
         {
             if (_context.GenDeptos == null)
             {
                 return NotFound();
             }
-            var genDepto = await _context.GenDeptos.Where(x=>x.CodPai== codPais).ToListAsync();
+            var genDepto = await _context.GenDeptos.Where(x=>x.cod_pai== codPais).ToListAsync();
 
             if (genDepto == null)
             {
@@ -69,9 +67,9 @@ namespace Novasoft.Server.Controllers
         // PUT: api/GenDeptoes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutGenDepto(string id, GenDepto genDepto)
+        public async Task<IActionResult> PutGenDepto(string id, gen_deptos genDepto)
         {
-            if (id != genDepto.CodPai)
+            if (id != genDepto.cod_pai)
             {
                 return BadRequest();
             }
@@ -100,7 +98,7 @@ namespace Novasoft.Server.Controllers
         // POST: api/GenDeptoes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<GenDepto>> PostGenDepto(GenDepto genDepto)
+        public async Task<ActionResult<gen_deptos>> PostGenDepto(gen_deptos genDepto)
         {
           if (_context.GenDeptos == null)
           {
@@ -113,7 +111,7 @@ namespace Novasoft.Server.Controllers
             }
             catch (DbUpdateException)
             {
-                if (GenDeptoExists(genDepto.CodPai))
+                if (GenDeptoExists(genDepto.cod_pai))
                 {
                     return Conflict();
                 }
@@ -123,7 +121,7 @@ namespace Novasoft.Server.Controllers
                 }
             }
 
-            return CreatedAtAction("GetGenDepto", new { id = genDepto.CodPai }, genDepto);
+            return CreatedAtAction("GetGenDepto", new { id = genDepto.cod_pai }, genDepto);
         }
 
         // DELETE: api/GenDeptoes/5
@@ -148,7 +146,7 @@ namespace Novasoft.Server.Controllers
 
         private bool GenDeptoExists(string id)
         {
-            return (_context.GenDeptos?.Any(e => e.CodPai == id)).GetValueOrDefault();
+            return (_context.GenDeptos?.Any(e => e.cod_pai == id)).GetValueOrDefault();
         }
     }
 }

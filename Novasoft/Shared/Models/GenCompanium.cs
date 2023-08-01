@@ -150,6 +150,8 @@ public partial class GenCompanium
     /// </summary>
     public bool? IndActExtr { get; set; }
 
+    public virtual ICollection<GthArea> GthAreas { get; set; } = new List<GthArea>();
+
     public virtual ICollection<RhhCargo> RhhCargos { get; set; } = new List<RhhCargo>();
 
     public virtual ICollection<RhhEmplea> RhhEmpleas { get; set; } = new List<RhhEmplea>();

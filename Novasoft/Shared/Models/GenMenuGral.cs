@@ -26,4 +26,6 @@ public partial class GenMenuGral
     public int OrdObj { get; set; }
 
     public virtual SisAplicacion CodAplNavigation { get; set; } = null!;
+
+    
 }

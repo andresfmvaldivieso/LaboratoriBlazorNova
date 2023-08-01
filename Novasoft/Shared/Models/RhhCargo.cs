@@ -159,13 +159,7 @@ public partial class RhhCargo
     /// </summary>
     public string? CodCiaExtr { get; set; }
 
-    public virtual RhhCargo? CarSupNavigation { get; set; }
-
     public virtual GenCompanium? CodCiaNavigation { get; set; }
-
-    public virtual ICollection<RhhCargo> InverseCarSupNavigation { get; set; } = new List<RhhCargo>();
-
     public virtual RhhTbclaest? NivAcaNavigation { get; set; }
-
     public virtual ICollection<RhhEmplea> RhhEmpleas { get; set; } = new List<RhhEmplea>();
 }

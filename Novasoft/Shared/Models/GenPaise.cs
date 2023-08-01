@@ -47,5 +47,5 @@ public partial class GenPaise
 
     public virtual ICollection<GenCiudad> GenCiudads { get; set; } = new List<GenCiudad>();
 
-    public virtual ICollection<GenDepto> GenDeptos { get; set; } = new List<GenDepto>();
+    public virtual ICollection<gen_deptos> GenDeptos { get; set; } = new List<gen_deptos>();
 }

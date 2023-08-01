@@ -60,7 +60,7 @@ public partial class GenCiudad
     /// </summary>
     public bool IndActExtr { get; set; }
 
-    public virtual GenDepto Cod { get; set; } = null!;
+    public virtual gen_deptos Cod { get; set; } = null!;
 
     public virtual GenPaise CodPaiNavigation { get; set; } = null!;
 

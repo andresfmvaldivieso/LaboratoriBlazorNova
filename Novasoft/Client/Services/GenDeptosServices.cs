@@ -10,13 +10,13 @@ namespace Novasoft.Client.Services
         {
             _httpClient = httpClient;
         }
-        public async Task<IEnumerable<GenDepto>?> GetDeptos()
+        public async Task<IEnumerable<gen_deptos>?> GetDeptos()
         {
-            return await _httpClient.GetFromJsonAsync<IEnumerable<GenDepto>>($"api/GenDeptoes");
+            return await _httpClient.GetFromJsonAsync<IEnumerable<gen_deptos>>($"api/GenDeptoes");
         }
     }
     public interface IGenDeptosServices
     {
-        Task<IEnumerable<GenDepto>?> GetDeptos();
+        Task<IEnumerable<gen_deptos>?> GetDeptos();
     }
 }

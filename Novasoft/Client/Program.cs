@@ -14,7 +14,10 @@ builder.Services.AddHttpClient("Novasoft.ServerAPI", client => client.BaseAddres
 
 // Supply HttpClient instances that include access tokens when making requests to the server project
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("Novasoft.ServerAPI"));
+builder.Services.AddScoped<DialogService>();
+builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<TooltipService>();
+builder.Services.AddScoped<ContextMenuService>();
 
 builder.Services.ConfigureDependencies();
 

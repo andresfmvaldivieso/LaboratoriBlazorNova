@@ -68,7 +68,7 @@ public partial class GenSucursal
     /// <summary>
     /// Indicador de Exención de IVA
     /// </summary>
-    public bool? IndExciva { get; set; }
+    public bool? ind_exciva { get; set; }
 
     /// <summary>
     /// Campo llave de homologación para el sistema externo

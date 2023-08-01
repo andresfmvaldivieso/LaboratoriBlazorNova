@@ -3,22 +3,22 @@ using System.Collections.Generic;
 
 namespace Novasoft.Server.Data;
 
-public partial class GenDepto
+public partial class gen_deptos
 {
     /// <summary>
     /// Pais
     /// </summary>
-    public string CodPai { get; set; } = null!;
+    public string cod_pai { get; set; } = null!;
 
     /// <summary>
     /// Departamento
     /// </summary>
-    public string CodDep { get; set; } = null!;
+    public string cod_dep { get; set; } = null!;
 
     /// <summary>
     /// Nombre
     /// </summary>
-    public string NomDep { get; set; } = null!;
+    public string nom_dep { get; set; } = null!;
 
     /// <summary>
     /// Ind politico
@@ -28,12 +28,12 @@ public partial class GenDepto
     /// <summary>
     /// Sigla ACH
     /// </summary>
-    public string? SiglaDep { get; set; }
+    public string? sigla_dep { get; set; }
 
     /// <summary>
     /// Campo llave de homologación para el sistema externo
     /// </summary>
-    public string? CodDepExtr { get; set; }
+    public string? cod_dep_Extr { get; set; }
 
     /// <summary>
     /// Campo llave de homologación para el sistema externo

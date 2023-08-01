@@ -1,0 +1,34 @@
+﻿@inject ContextMenuService ContextMenuService
+@page "/personalizacion"
+<h3>MenuPersonalizacionView</h3>
+<RadzenStack Gap="1rem" Class="rz-p-sm-12">
+    <RadzenButton Text="" ContextMenu=@(args => ShowContextMenuWithContent(args)) ButtonStyle="ButtonStyle.Secondary" Size="ButtonSize.Large" />
+    
+</RadzenStack>
+<RadzenStack Gap="1rem" Class="rz-p-sm-12">
+    <section @oncontextmenu="ShowContextMenuWithContent" style="width: 500px; height: 500px; background-color: #f2f2f2;">
+    <!-- Contenido de la región -->
+</section>
+</RadzenStack>
+@code {
+    void ShowContextMenuWithContent(MouseEventArgs args) => ContextMenuService.Open(args, ds =>
+    @<RadzenMenu Click="OnMenuItemClick">
+        <RadzenMenuItem Text="Item1" Value="1"></RadzenMenuItem>
+        <RadzenMenuItem Text="Item2" Value="2"></RadzenMenuItem>
+        <hr />
+        <RadzenMenuItem Text="More items" Value="3">
+            <RadzenMenuItem Text="More sub items" Value="4">
+                <RadzenMenuItem Text="Item1" Value="5"></RadzenMenuItem>
+                <RadzenMenuItem Text="Item2" Value="6"></RadzenMenuItem>
+            </RadzenMenuItem>
+        </RadzenMenuItem>
+    </RadzenMenu>);
+     void OnMenuItemClick(MenuItemEventArgs args)
+    {
+       
+        if (!args.Value.Equals(3) && !args.Value.Equals(4))
+        {
+            ContextMenuService.Close();
+        }
+    }
+}

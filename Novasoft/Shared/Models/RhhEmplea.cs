@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Novasoft.Server.Data;
 
@@ -76,7 +79,7 @@ public partial class RhhEmplea
     /// <summary>
     /// Clase Libreta Militar
     /// </summary>
-    public int? ClaLib { get; set; }
+    public short? ClaLib { get; set; }
 
     /// <summary>
     /// Distrito militar
@@ -96,12 +99,12 @@ public partial class RhhEmplea
     /// <summary>
     /// Estado civil
     /// </summary>
-    public int? EstCiv { get; set; }
+    public short? EstCiv { get; set; }
 
     /// <summary>
     /// Nacionalidad
     /// </summary>
-    public int? NacEmp { get; set; }
+    public short? NacEmp { get; set; }
 
     /// <summary>
     /// Dir. Residencia
@@ -241,7 +244,7 @@ public partial class RhhEmplea
     /// <summary>
     /// Regimen salarial
     /// </summary>
-    public int? RegSal { get; set; }
+    public short? RegSal { get; set; }
 
     /// <summary>
     /// Tipo de liquidacion
@@ -616,6 +619,8 @@ public partial class RhhEmplea
     /// <summary>
     /// Foto Empleado
     /// </summary>
+    /// 
+    [JsonIgnore]
     public byte[]? FtoEmp { get; set; }
 
     /// <summary>
@@ -696,7 +701,7 @@ public partial class RhhEmplea
 
     public int? NumReq { get; set; }
 
-    public int AutDat { get; set; }
+    public byte AutDat { get; set; }
 
     public DateTime? FecAut { get; set; }
 
@@ -891,74 +896,75 @@ public partial class RhhEmplea
     /// Indicador Tiene Mascota
     /// </summary>
     public bool? IndMascota { get; set; }
-
+    [JsonIgnore]
     public virtual RhhTbfondo? CcfEmpNavigation { get; set; }
-
+    [JsonIgnore]
     public virtual GenCiudad? Cod { get; set; }
-
+    [JsonIgnore]
     public virtual GenBanco? CodBanNavigation { get; set; }
-
+    [JsonIgnore]
     public virtual RhhCargo? CodCarNavigation { get; set; }
-
+    [JsonIgnore]
     public virtual GenCcosto? CodCcoNavigation { get; set; }
-
+    [JsonIgnore]
     public virtual GenCompanium? CodCiaNavigation { get; set; }
-
+    [JsonIgnore]
     public virtual GenClasif1? CodCl1Navigation { get; set; }
-
+    [JsonIgnore]
     public virtual GenClasif2? CodCl2Navigation { get; set; }
-
+    [JsonIgnore]
     public virtual GenClasif3? CodCl3Navigation { get; set; }
-
+    [JsonIgnore]
     public virtual GenClasif4? CodCl4Navigation { get; set; }
-
+    [JsonIgnore]
     public virtual GenClasif5? CodCl5Navigation { get; set; }
-
+    [JsonIgnore]
     public virtual GenClasif6? CodCl6Navigation { get; set; }
-
+    [JsonIgnore]
     public virtual GenClasif7? CodCl7Navigation { get; set; }
-
+    [JsonIgnore]
     public virtual GthRptEstado? CodEstNavigation { get; set; }
-
+    [JsonIgnore]
     public virtual GenGrupoetnico? CodGrupoNavigation { get; set; }
-
+    
     public virtual RhhRanVac CodRanvacNavigation { get; set; } = null!;
-
+    [JsonIgnore]
     public virtual GenSucursal? CodSucNavigation { get; set; }
-
+    [JsonIgnore]
     public virtual RhhTipoliq? CodTlqNavigation { get; set; }
-
+    
     public virtual RhhTbmedidaDian2280 ConceptoDian2280Navigation { get; set; } = null!;
-
+    [JsonIgnore]
     public virtual RhhTbestlab? EstLabNavigation { get; set; }
-
+    [JsonIgnore]
     public virtual RhhTbfondo? FdoAteNavigation { get; set; }
-
+    
     public virtual RhhTbfondo FdoCesNavigation { get; set; } = null!;
-
+    
     public virtual RhhTbfondo FdoPenNavigation { get; set; } = null!;
-
+    [JsonIgnore]
     public virtual RhhTbfondo? FdoSalNavigation { get; set; }
-
+    [JsonIgnore]
     public virtual GenBarrio? GenBarrio { get; set; }
-
+    [JsonIgnore]
     public virtual GenCiudad? GenCiudad { get; set; }
-
+    [JsonIgnore]
     public virtual GenCiudad? GenCiudadNavigation { get; set; }
-
+    [JsonIgnore]
     public virtual RhhTbclaest? NivAcaNavigation { get; set; }
-
+    [JsonIgnore]
     public virtual RhhTbemppen? PenEmpNavigation { get; set; }
-
+    
     public virtual RhhTbSubTipCotiza SubTipCotNavigation { get; set; } = null!;
 
-    public virtual GenTipide TipIdeNavigation { get; set; } = null!;
-
+    [ForeignKey("TipIde")]
+    public virtual GenTipide TipIdeNavigation { get; set; } = new();
+    [JsonIgnore]
     public virtual RhhTbTipPag? TipPagNavigation { get; set; }
-
+    
     public virtual RhhTbtippen TipPenNavigation { get; set; } = null!;
-
+    
     public virtual RhhTbsindicalizdo TipSindclzdoNavigation { get; set; } = null!;
-
+    
     public virtual RhhTbtipvinculacion TipVincDianNavigation { get; set; } = null!;
 }

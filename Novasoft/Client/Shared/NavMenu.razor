@@ -1,4 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+@using Microsoft.AspNetCore.Components
+@using Novasoft.Resources
+
 @inject ISisAplicacionesServices sisAplicacionesServices
 @inject IGenMenuGralServices genMenuGralServices
 <div class="top-row ps-3 navbar" style="background-color:#f2f2f2">
@@ -18,19 +21,37 @@
         </div>
         @if (listaMenu?.Count() > 0)
         {
-            @foreach (var menu in listaMenu)
-            {
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="@menu.RefObj">
-                        <RadzenIcon Icon="add" class="rz-mr-1" /><b style="white-space: nowrap;">@menu.DesObj.Trim()</b>
-                    </NavLink>
-                </div>
-            }
+            <div class="nav-item px-3">
+                <RadzenPanelMenu Style="width:400px" Multiple="true" class=" menu-background">
+                    <ChildContent>
+                        @foreach (var menu in listaMenu.Where(x => x.CodGru.Trim() == "0").OrderBy(x => x.OrdObj))
+                        {
+                            @RenderMenu(menu)
+                        }
+                    </ChildContent>
+                </RadzenPanelMenu>
+            </div>
+            <div class="nav-item px-3">
+                <RadzenPanelMenu Style="width:400px" Multiple="true" class=" menu-background">
+                    <RadzenPanelMenuItem Text="Documentos" Icon="description">
+                        <RadzenPanelMenuItem Text="Ejecutar" Path="http://localhost/NovasoftWeb/Documentos/Instalador/Novasoft.Documentos.application?codapl=13W57hNRjuDmOAfB+/26lQ==&WebApp=6DFA5htz5yyLXty0ovHePYNiMaPoCnTn8Cu5EYPJxk7PGf7VcTMm7cARBpryxLER&DNSIdentity=VFiPy24p42DIfPrr3AhQB6mLoMYx7HAKiq7NdCnwx1M=&autWindows=Ub8m0NneOE13eyQMfpQrDQ==&CertAutoFirmado=gS3PF8Nibx2LbQrMRuZoyA==&Cultura=lsHGgjVm/ZdFsEUBClsAww==&urlDocServices=8XBxDeTvsnPDMYwLhjKENAG1rC5i0jZUrwQSRzoHXx72sxW8Br5UyAS3pj67Yrei&nomConex=W3KSGBFxKHL9IM+QK0HqUQ==&tInactivo=VTv+AfYU2aYFQbhInH2d5Q==" Icon="play_arrow"></RadzenPanelMenuItem>
+                    </RadzenPanelMenuItem>
+                </RadzenPanelMenu>
+            </div>
+
         }
     </nav>
 </div>
-
+<style>
+    .menu-background {
+        background-color: #1B9968;
+    }
+    .item-background {
+        background-color: #1B9968;
+    }
+</style>
 @code {
+
     private bool collapseNavMenu = true;
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
@@ -42,6 +63,7 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
+
     protected async override Task OnParametersSetAsync()
     {
         try
@@ -56,10 +78,47 @@
         await base.OnParametersSetAsync();
     }
     public IEnumerable<GenMenuGral?> listaMenu;
-
     public async void AplicacionChange(dynamic args)
     {
         listaMenu = !string.IsNullOrEmpty(codApl) ? await genMenuGralServices.GetGenMenuGral(codApl) : null;
         InvokeAsync(StateHasChanged);
+    }
+
+    private RenderFragment RenderMenu(GenMenuGral menu)
+    {
+        return builder =>
+        {
+            builder.OpenComponent<RadzenPanelMenuItem>(0);
+            builder.AddAttribute(1, "Text", menu.DesObj);
+            builder.AddAttribute(2, "Icon", "library_add");
+            builder.AddAttribute(3, "Class", "item-background");
+
+            if (!string.IsNullOrEmpty(menu.RefObj))
+            {
+                if (menu.TipObj == "M")
+                {
+                    builder.AddAttribute(4, "Path", $"maestros/{menu.RefObj}");
+                    builder.AddAttribute(5, "Icon", "dashboard");
+                }
+                else
+                {
+                    builder.AddAttribute(4, "Path", menu.RefObj);
+                    builder.AddAttribute(5, "Icon", "list_alt");
+                }
+            }
+
+            builder.AddAttribute(6, "ChildContent", (RenderFragment)((subBuilder) =>
+            {
+                if (listaMenu.Any(x => x.CodGru == menu.CodObj))
+                {
+                    foreach (var subMenu in listaMenu.Where(x => x.CodGru == menu.CodObj).OrderBy(x => x.OrdObj))
+                    {
+                        RenderMenu(subMenu)(subBuilder);
+                    }
+                }
+            }));
+
+            builder.CloseComponent();
+        };
     }
 }

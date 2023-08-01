@@ -5,7 +5,7 @@
                 AllowFiltering="true" TextProperty="NomPai" ValueProperty="CodPai" class="col-10" />
 <RadzenTextBox @bind-Value=@deptoSelected ReadOnly="true" class="col-1" />
 <RadzenDropDown @bind-Value=@deptoSelected Data=@deptos LoadData=@LoadDataDeptos Count="@countDeptos" AllowVirtualization="true" AllowClear="true"
-                AllowFiltering="true" TextProperty="NomDep" ValueProperty="CodDep" class="col-10" />
+                AllowFiltering="true" TextProperty="nom_dep" ValueProperty="cod_dep" class="col-10" />
 <RadzenTextBox @bind-Value=@ciudadSelected ReadOnly="true" class="col-1" />
 <RadzenDropDown @bind-Value=@ciudadSelected Data=@ciudades LoadData=@LoadDataCiudades Count="@countCiudad" AllowVirtualization="true" AllowClear="true"
                 AllowFiltering="true" TextProperty="NomCiu" ValueProperty="CodCiu" Change="@CiudadChange" class="col-10" />
